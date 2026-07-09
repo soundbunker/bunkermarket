@@ -1,0 +1,8 @@
+# 벙커마켓 · Netlify 배포 설정
+# 정적 사이트(빌드 없음). 저장소 루트를 그대로 게시.
+[build]
+  publish = "."
+  command = ""
+
+# SPA가 아니라 실제 .html 파일들이므로 별도 리다이렉트 불필요.
+# 커스텀 도메인(bunkermarket.kr 등) 연결은 Netlify 대시보드 > Domain settings 에서.
