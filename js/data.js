@@ -17,16 +17,16 @@
 const CATEGORIES = {
   produce: {
     label: '농산물',
-    tagline: '이 소리를 들으며 자란 작물',
-    cta: '장바구니 담기',
-    mode: 'cart',          // 장바구니 → 주문
+    tagline: '이 소리가 흐르는 바닷가에서 자란 작물',
+    cta: '사러 가기',
+    mode: 'link',          // 외부 판매처로 링크아웃
     icon: '🌱',
   },
   stay: {
     label: '소리 좋은 집',
-    tagline: '이 소리가 사는 공간',
+    tagline: '이 소리가 흐르는 공간',
     cta: '방문·구매 문의',
-    mode: 'inquiry',       // 문의 접수 (고가/실물 확인 필요)
+    mode: 'inquiry',       // 문의 (mailto/외부 링크)
     icon: '🏡',
   },
   // 예: goods, experience ... 여기에 계속 추가
@@ -177,14 +177,17 @@ const SOUNDS = [
   // 👉 새 소리는 여기에 계속 추가하세요. NFC 카드는 이 id 로 연결됩니다.
 ];
 
-/* --- 상품 (소리가 키운 것) ----------------------------------------------- */
-/* soundId 로 소리에 연결. category 로 판매 방식(cart/inquiry) 결정.          */
+/* --- 상품 (소리가 흐르는 곳에서 자란 것) --------------------------------- */
+/* soundId 로 소리에 연결. category 로 표시 방식 결정.                        */
+/* link : 실제 판매처 URL (네이버스토어·자사몰·농가 링크 등).                  */
+/*        비워두면 → 상품명으로 네이버쇼핑 검색 링크가 자동 생성됨.            */
 const LISTINGS = [
   /* ── 농산물 ─────────────────────────────────────────────────── */
   {
     id: 'p-hyeopjae-garlic',
     soundId: 'jeju-hyeopjae',
     category: 'produce',
+    link: '',   // ← 실제 판매처 URL
     title: '협재 통마늘',
     producer: '협재리 김농부',
     price: 13000, unit: '1kg',
@@ -196,6 +199,7 @@ const LISTINGS = [
     id: 'p-gimnyeong-carrot',
     soundId: 'jeju-gimnyeong',
     category: 'produce',
+    link: '',   // ← 실제 판매처 URL
     title: '김녕 구좌 당근',
     producer: '구좌 해밭농원',
     price: 15000, unit: '3kg',
@@ -207,6 +211,7 @@ const LISTINGS = [
     id: 'p-seongsan-broccoli',
     soundId: 'jeju-seongsan',
     category: 'produce',
+    link: '',   // ← 실제 판매처 URL
     title: '성산 브로콜리',
     producer: '일출밭 협동조합',
     price: 12000, unit: '2kg',
@@ -218,6 +223,7 @@ const LISTINGS = [
     id: 'p-sagye-potato',
     soundId: 'jeju-sagye',
     category: 'produce',
+    link: '',   // ← 실제 판매처 URL
     title: '사계 흑감자',
     producer: '산방밭 이농부',
     price: 11000, unit: '2kg',
@@ -229,10 +235,11 @@ const LISTINGS = [
     id: 'p-udo-peanut',
     soundId: 'jeju-udo',
     category: 'produce',
+    link: '',   // ← 실제 판매처 URL
     title: '우도 땅콩',
     producer: '우도 하고수동 농가',
     price: 18000, unit: '600g',
-    short: '나른한 만의 파도가 키운 고소한 우도 땅콩',
+    short: '나른한 만의 파도가 흐르는 밭에서 자란 고소한 우도 땅콩',
     story: '따뜻하고 느린 파도 아래 작지만 기름지고 고소하게 여뭅니다.',
     stock: 35,
   },
@@ -240,6 +247,7 @@ const LISTINGS = [
     id: 'p-woljeong-cabbage',
     soundId: 'jeju-woljeong',
     category: 'produce',
+    link: '',   // ← 실제 판매처 URL
     title: '월정 양배추',
     producer: '월정리 포말농장',
     price: 9000, unit: '1통',
@@ -251,6 +259,7 @@ const LISTINGS = [
     id: 'p-anmok-corn',
     soundId: 'gangneung-anmok',
     category: 'produce',
+    link: '',   // ← 실제 판매처 URL
     title: '강릉 초당옥수수',
     producer: '안목 바다밭',
     price: 16000, unit: '10개',
@@ -264,6 +273,7 @@ const LISTINGS = [
     id: 'h-woljeong-house',
     soundId: 'jeju-woljeong',
     category: 'stay',
+    link: '',   // ← 매물/문의 링크 (비우면 이메일 문의)
     title: '월정 파도소리 돌집',
     producer: '벙커마켓 큐레이션',
     price: 480000000, unit: '매매',
@@ -275,6 +285,7 @@ const LISTINGS = [
     id: 'h-udo-stay',
     soundId: 'jeju-udo',
     category: 'stay',
+    link: '',   // ← 매물/문의 링크 (비우면 이메일 문의)
     title: '우도 나른한 만 목조주택',
     producer: '벙커마켓 큐레이션',
     price: 320000000, unit: '매매',

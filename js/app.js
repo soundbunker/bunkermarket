@@ -10,6 +10,14 @@ const U = {
   soundById(id){ return window.BUNKER.SOUNDS.find(s=>s.id===id); },
   listingsForSound(id){ return window.BUNKER.LISTINGS.filter(l=>l.soundId===id); },
   category(key){ return window.BUNKER.CATEGORIES[key]; },
+  // 판매처 링크: link 있으면 그대로, 없으면 → 문의(집)/네이버쇼핑 검색(농산물)
+  buyLink(l){
+    if(l.link) return l.link;
+    if(U.category(l.category).mode === 'inquiry')
+      return `mailto:hello@bunkermarket.kr?subject=${encodeURIComponent('[문의] '+l.title)}`;
+    const q = encodeURIComponent(`${l.producer||''} ${l.title}`.trim());
+    return `https://search.shopping.naver.com/search/all?query=${q}`;
+  },
   // hue → 바다빛 그라디언트
   grad(hue){ return `linear-gradient(155deg, hsl(${hue} 55% 26%), hsl(${(hue+22)%360} 60% 16%))`; },
   emoji(listing){
@@ -55,30 +63,27 @@ const UI = {
   productCard(l){
     const s = U.soundById(l.soundId);
     const cat = U.category(l.category);
+    const href = U.buyLink(l);
+    const ext = cat.mode !== 'inquiry';        // 외부 사이트면 새 탭
+    const attr = ext ? 'target="_blank" rel="noopener"' : '';
+    const btnCls = cat.mode === 'inquiry' ? 'btn btn-line btn-sm' : 'btn btn-accent btn-sm';
+    const btnLabel = (cat.cta || '보러 가기') + (ext ? ' ↗' : '');
     const el = document.createElement('div');
     el.className='prod-card';
     el.innerHTML = `
-      <a class="prod-thumb" href="product.html?p=${l.id}" style="background:${U.grad(s.tone.hue)}">
+      <a class="prod-thumb" href="${href}" ${attr} style="background:${U.grad(s.tone.hue)}">
         <span class="cat">${cat.icon} ${cat.label}</span>
         <span class="emoji">${U.emoji(l)}</span>
       </a>
       <div class="prod-body">
-        <div class="from">🌊 <a href="sound.html?s=${s.id}">${s.title}</a> 이(가) 키움</div>
-        <h3><a href="product.html?p=${l.id}">${l.title}</a></h3>
+        <div class="from">🌊 <a href="sound.html?s=${s.id}">${s.title}</a> 소리가 흐르는 곳</div>
+        <h3><a href="${href}" ${attr}>${l.title}</a></h3>
         <div class="short">${l.short}</div>
         <div class="price">${U.krw(l.price)}<small>/ ${l.unit}</small></div>
-        <div class="prod-actions"></div>
+        <div class="prod-actions">
+          <a class="${btnCls}" href="${href}" ${attr}>${btnLabel}</a>
+        </div>
       </div>`;
-    const actions = el.querySelector('.prod-actions');
-    if(cat.mode === 'cart'){
-      const b=document.createElement('button'); b.className='btn btn-accent btn-sm'; b.textContent=cat.cta;
-      b.onclick=()=>{ Store.add(l.id); UI.toast(`장바구니에 담았어요 · ${l.title}`); UI.openDrawer(); };
-      actions.appendChild(b);
-    }else{
-      const b=document.createElement('a'); b.className='btn btn-line btn-sm'; b.textContent=cat.cta;
-      b.href=`product.html?p=${l.id}#inquiry`;
-      actions.appendChild(b);
-    }
     return el;
   },
 
@@ -132,9 +137,9 @@ const UI = {
 
 /* --- 헤더 장바구니 배지 자동 연결 --------------------------------------- */
 function wireHeader(){
-  UI.mountDrawer();
   const cartBtn=document.querySelector('.cart-btn');
   if(cartBtn){
+    UI.mountDrawer();
     cartBtn.addEventListener('click',(e)=>{ e.preventDefault(); UI.openDrawer(); });
     Store.onChange(()=>{
       let b=cartBtn.querySelector('.badge');
