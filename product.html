@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>상품 · 벙커마켓</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="dot"></span>벙커마켓</a>
+    <nav>
+      <a href="index.html#sounds">소리</a>
+      <a href="catalog.html">마켓</a>
+      <a href="nfc.html">NFC 카드</a>
+      <a class="cart-btn" href="#">🛒 장바구니</a>
+    </nav>
+  </div>
+</header>
+
+<main id="app" class="wrap" style="padding:40px 22px 70px"></main>
+
+<footer class="site"><div class="wrap">
+  <div class="col"><div class="brand" style="font-size:20px"><span class="dot" style="background:var(--tide-lite);box-shadow:none"></span> 벙커마켓</div></div>
+</div></footer>
+
+<script src="js/data.js"></script>
+<script src="js/ocean.js"></script>
+<script src="js/store.js"></script>
+<script src="js/app.js"></script>
+<script>
+  const l = BUNKER.LISTINGS.find(x=>x.id===U.qs('p'));
+  const app = document.getElementById('app');
+
+  if(!l){ app.innerHTML=`<p class="muted">상품을 찾을 수 없어요. <a href="catalog.html">마켓으로</a></p>`; }
+  else {
+    const s = U.soundById(l.soundId);
+    const cat = U.category(l.category);
+    document.title = `${l.title} · 벙커마켓`;
+
+    app.innerHTML = `
+      <a class="muted" href="catalog.html" style="font-size:14px">← 마켓</a>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:18px;align-items:start" id="cols">
+        <div class="prod-thumb" style="background:${U.grad(s.tone.hue)};border-radius:var(--radius);aspect-ratio:1;position:relative">
+          <span class="cat">${cat.icon} ${cat.label}</span>
+          <span style="font-size:96px">${U.emoji(l)}</span>
+        </div>
+        <div>
+          <div class="from" style="color:var(--tide);font-size:13px;margin-bottom:10px">🌊 <a href="sound.html?s=${s.id}"><b>${s.title}</b></a> 이(가) 키움</div>
+          <h1 class="serif" style="font-size:34px;letter-spacing:-.01em">${l.title}</h1>
+          <p class="muted" style="margin-top:6px">${l.producer}</p>
+          <div class="serif" style="font-size:30px;margin:18px 0">${U.krw(l.price)} <span class="muted" style="font-family:var(--sans);font-size:15px">/ ${l.unit}</span></div>
+          <p style="font-size:16px">${l.short}</p>
+          <p class="muted" style="margin-top:12px">${l.story}</p>
+
+          <!-- 소리 미리듣기 -->
+          <button class="btn btn-line" id="listen" style="margin-top:20px">▶ 이 작물이 들은 소리 듣기</button>
+
+          <div id="action" style="margin-top:24px"></div>
+        </div>
+      </div>
+      <div id="inquiry"></div>`;
+
+    // 소리 듣기
+    const lb = document.getElementById('listen');
+    lb.onclick=()=>Ocean.toggle(s, on=>lb.innerHTML = on ? '❚❚ 재생 중…' : '▶ 이 작물이 들은 소리 듣기');
+
+    // 구매/문의 액션 (카테고리별 분기)
+    const action = document.getElementById('action');
+    if(cat.mode === 'cart'){
+      action.innerHTML = `
+        <div style="display:flex;gap:10px;align-items:center">
+          <div style="display:flex;align-items:center;gap:12px;border:1.5px solid var(--line);border-radius:12px;padding:8px 14px">
+            <button id="mi" class="x">−</button><b id="q">1</b><button id="pl" class="x">+</button>
+          </div>
+          <button class="btn btn-accent" id="add" style="flex:1">${cat.cta}</button>
+        </div>`;
+      let q=1; const qEl=action.querySelector('#q');
+      action.querySelector('#mi').onclick=()=>{ q=Math.max(1,q-1); qEl.textContent=q; };
+      action.querySelector('#pl').onclick=()=>{ q++; qEl.textContent=q; };
+      action.querySelector('#add').onclick=()=>{ Store.add(l.id,q); UI.toast(`장바구니에 담았어요 · ${l.title}`); UI.openDrawer(); };
+    } else {
+      // 문의형 (소리 좋은 집 등)
+      action.innerHTML = `<a class="btn btn-accent" href="#inquiry">${cat.cta} ↓</a>`;
+      document.getElementById('inquiry').innerHTML = `
+        <section class="block" style="padding-top:50px">
+          <div class="sec-head"><div><h2>${cat.cta}</h2><p>담당 큐레이터가 확인 후 방문·구매 절차를 안내드립니다.</p></div></div>
+          <form class="form-card" id="inqForm">
+            <label>이름</label><input required name="name" placeholder="성함">
+            <label>연락처</label><input required name="phone" placeholder="010-0000-0000">
+            <label>희망 내용</label><textarea name="msg" rows="3" placeholder="방문 희망일, 궁금한 점을 적어주세요"></textarea>
+            <button class="btn btn-accent" style="margin-top:18px;width:100%">문의 보내기</button>
+          </form>
+        </section>`;
+      document.getElementById('inqForm').onsubmit=(e)=>{
+        e.preventDefault();
+        UI.toast('문의가 접수되었어요. 곧 연락드릴게요 🌊');
+        e.target.reset();
+      };
+    }
+  }
+</script>
+</body>
+</html>

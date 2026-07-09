@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>소리 · 벙커마켓</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="dot"></span>벙커마켓</a>
+    <nav>
+      <a href="index.html#sounds">소리</a>
+      <a href="catalog.html">마켓</a>
+      <a href="nfc.html">NFC 카드</a>
+      <a class="cart-btn" href="#">🛒 장바구니</a>
+    </nav>
+  </div>
+</header>
+
+<main id="app"><!-- 렌더 --></main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="col"><div class="brand" style="font-size:20px"><span class="dot" style="background:var(--tide-lite);box-shadow:none"></span> 벙커마켓</div>
+      <p style="font-size:14px">소리가 키운 것.</p></div>
+    <div class="col"><h4>마켓</h4><a href="catalog.html">전체 상품</a><a href="nfc.html">NFC 카드</a></div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/ocean.js"></script>
+<script src="js/store.js"></script>
+<script src="js/app.js"></script>
+<script>
+  const s = U.soundById(U.qs('s'));
+  const app = document.getElementById('app');
+
+  if(!s){
+    app.innerHTML = `<div class="wrap" style="padding:90px 22px;text-align:center">
+      <h1 class="serif" style="font-size:32px">소리를 찾을 수 없어요</h1>
+      <p class="muted" style="margin:12px 0 24px">NFC 카드를 다시 태그하거나 소리 목록에서 골라주세요.</p>
+      <a class="btn btn-accent" href="index.html#sounds">소리 목록 보기</a></div>`;
+  } else {
+    document.title = `${s.title} · 벙커마켓`;
+    const items = U.listingsForSound(s.id);
+
+    // 히어로
+    const hero = document.createElement('section');
+    hero.className='detail-hero';
+    hero.style.background = U.grad(s.tone.hue);
+    hero.innerHTML = `
+      <svg class="wave-bg" viewBox="0 0 1440 400" preserveAspectRatio="none">
+        <path fill="#fff" opacity=".08" d="M0,240 C300,320 560,160 820,220 C1080,280 1240,200 1440,250 L1440,400 L0,400 Z"/>
+      </svg>
+      <div class="wrap">
+        <div class="code">${s.code} · 📡 NFC 태그됨</div>
+        <h1>${s.title}</h1>
+        <div class="spot">${s.region.country} · ${s.region.area} · ${s.region.spot}</div>
+        <div class="player" id="player">
+          <button class="big-play" id="bigPlay" aria-label="재생">▶</button>
+          <div class="wavebar">${'<i></i>'.repeat(28)}</div>
+          <div class="meta"><b>지금 듣기</b><br><span class="muted" style="color:rgba(255,255,255,.7)">${s.recordedAt} 녹음</span></div>
+        </div>
+        <p class="story">${s.story}</p>
+        <div class="infoline">
+          <div><span>분위기</span>${s.tags.join(' · ')}</div>
+          <div><span>좌표</span>${s.coords.lat.toFixed(3)}, ${s.coords.lng.toFixed(3)}</div>
+          <div><span>키운 것</span>${items.length}종</div>
+        </div>
+      </div>`;
+    app.appendChild(hero);
+
+    // 재생 버튼 (자동재생은 브라우저 정책상 탭 후 클릭 유도)
+    const player = hero.querySelector('#player');
+    const bp = hero.querySelector('#bigPlay');
+    bp.onclick = ()=> Ocean.toggle(s, on=>{
+      bp.textContent = on ? '❚❚' : '▶';
+      player.classList.toggle('playing', on);
+    });
+
+    // 소리가 키운 것
+    const sec = document.createElement('section');
+    sec.className='block';
+    sec.innerHTML = `<div class="wrap">
+      <div class="sec-head"><div>
+        <h2>이 소리가 키운 것</h2>
+        <p>${s.region.spot}의 파도를 들으며 자랐습니다.</p>
+      </div></div>
+      <div class="prod-grid" id="items"></div>
+    </div>`;
+    app.appendChild(sec);
+
+    const box = sec.querySelector('#items');
+    if(items.length){ items.forEach(l=>box.appendChild(UI.productCard(l))); }
+    else box.innerHTML = `<p class="muted">이 소리가 키운 것을 준비 중입니다. 곧 만나요 🌊</p>`;
+
+    // 다른 소리
+    const more = document.createElement('section');
+    more.className='block'; more.style.background='#fff'; more.style.borderTop='1px solid var(--line)';
+    more.innerHTML = `<div class="wrap"><div class="sec-head"><div><h2>다른 소리</h2></div>
+      <a class="btn btn-line btn-sm" href="index.html#sounds">전체 →</a></div>
+      <div class="sound-grid" id="more"></div></div>`;
+    app.appendChild(more);
+    const mg = more.querySelector('#more');
+    BUNKER.SOUNDS.filter(x=>x.id!==s.id).slice(0,4).forEach(x=>mg.appendChild(UI.soundCard(x)));
+
+    // NFC 로 들어온 경우: 소리 자동 재생 시도 (실패해도 무방)
+    setTimeout(()=>{ if(U.qs('autoplay')==='1'){ bp.click(); } }, 300);
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NFC 카드 · 벙커마켓</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .nfc-list{display:grid;gap:12px}
+  .nfc-row{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .nfc-row .dotc{width:40px;height:40px;border-radius:10px;flex:0 0 auto}
+  .nfc-row .g{flex:1;min-width:180px}
+  .nfc-row .g b{font-size:15px}
+  .nfc-row .url{font-size:12px;color:var(--muted);word-break:break-all;margin-top:2px}
+  .nfc-row .acts{display:flex;gap:8px}
+  .cfg{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:22px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .cfg input{flex:1;min-width:220px;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="dot"></span>벙커마켓</a>
+    <nav><a href="index.html#sounds">소리</a><a href="catalog.html">마켓</a><a class="cart-btn" href="#">🛒 장바구니</a></nav>
+  </div>
+</header>
+
+<section class="hero" style="background:linear-gradient(120deg,var(--tide),#155f69)">
+  <div class="wrap" style="padding:52px 22px 56px">
+    <span class="kicker">NFC · 마르셰 장터 운영용</span>
+    <h1 style="font-size:clamp(26px,5vw,40px)">소리를 카드에 담기</h1>
+    <p class="lead">카드마다 아래 주소를 새기면 됩니다. 손님이 태그하면 그 소리 페이지가 열리고 — 소리가 재생되며, 그 소리가 키운 것을 바로 살 수 있어요.</p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    <!-- 배포 도메인 설정 -->
+    <div class="cfg">
+      <div>🌐</div>
+      <div style="flex:1;min-width:200px">
+        <b>배포 주소</b>
+        <div class="muted" style="font-size:13px">사이트를 올린 도메인. NFC 카드에 새길 절대주소를 만듭니다.</div>
+      </div>
+      <input id="base" placeholder="https://bunkermarket.kr">
+      <button class="btn btn-dark btn-sm" id="saveBase">저장</button>
+    </div>
+
+    <div id="nfcSupport" class="muted" style="font-size:13px;margin-bottom:16px"></div>
+
+    <div class="sec-head"><div><h2>카드 목록 · <span id="cnt"></span>종</h2>
+      <p>소리를 추가하면 카드도 자동으로 늘어납니다.</p></div></div>
+    <div class="nfc-list" id="list"></div>
+  </div>
+</section>
+
+<footer class="site"><div class="wrap">
+  <div class="col"><div class="brand" style="font-size:20px"><span class="dot" style="background:var(--tide-lite);box-shadow:none"></span> 벙커마켓</div></div>
+</div></footer>
+
+<script src="js/data.js"></script>
+<script src="js/ocean.js"></script>
+<script src="js/store.js"></script>
+<script src="js/app.js"></script>
+<script>
+  const baseInput = document.getElementById('base');
+  const BASE_KEY='bunker.baseurl';
+  let base = localStorage.getItem(BASE_KEY) || location.origin + location.pathname.replace(/[^/]*$/,'');
+  baseInput.value = base;
+  document.getElementById('saveBase').onclick=()=>{
+    base = baseInput.value.trim().replace(/\/$/,'')+'/'; localStorage.setItem(BASE_KEY, base);
+    render(); UI.toast('저장했어요');
+  };
+
+  function urlFor(s){ return `${base.replace(/\/$/,'')}/sound.html?s=${s.id}&autoplay=1`; }
+
+  // Web NFC 지원 여부
+  const sup = document.getElementById('nfcSupport');
+  const hasNFC = 'NDEFReader' in window;
+  sup.innerHTML = hasNFC
+    ? '📡 이 기기는 <b>Web NFC 쓰기</b>를 지원합니다. “카드에 쓰기”를 누르고 빈 NFC 카드를 대세요. (안드로이드 Chrome)'
+    : '💡 이 브라우저는 카드 직접 쓰기를 지원하지 않아요(대개 안드로이드 Chrome에서 가능). 아래 <b>주소</b>를 복사해 NFC 쓰기 앱으로 새기면 됩니다.';
+
+  async function writeCard(s){
+    if(!hasNFC){ UI.toast('이 기기에서는 직접 쓰기가 안 돼요'); return; }
+    try{
+      const w = new NDEFReader();
+      await w.write({ records:[{ recordType:'url', data: urlFor(s) }] });
+      UI.toast(`카드에 새겼어요 · ${s.title}`);
+    }catch(e){ UI.toast('쓰기 실패: 카드를 다시 대주세요'); }
+  }
+
+  function render(){
+    const list=document.getElementById('list'); list.innerHTML='';
+    document.getElementById('cnt').textContent = BUNKER.SOUNDS.length;
+    BUNKER.SOUNDS.forEach(s=>{
+      const row=document.createElement('div'); row.className='nfc-row';
+      row.innerHTML=`
+        <div class="dotc" style="background:${U.grad(s.tone.hue)}"></div>
+        <div class="g"><b>${s.code} · ${s.title}</b>
+          <div class="muted" style="font-size:12px">${s.region.area} · ${s.region.spot}</div>
+          <div class="url">${urlFor(s)}</div></div>
+        <div class="acts">
+          <button class="btn btn-line btn-sm copy">주소 복사</button>
+          ${hasNFC?'<button class="btn btn-accent btn-sm wr">카드에 쓰기</button>':''}
+          <a class="btn btn-dark btn-sm" href="sound.html?s=${s.id}" target="_blank">열기</a>
+        </div>`;
+      row.querySelector('.copy').onclick=()=>{ navigator.clipboard.writeText(urlFor(s)); UI.toast('주소를 복사했어요'); };
+      const wr=row.querySelector('.wr'); if(wr) wr.onclick=()=>writeCard(s);
+      list.appendChild(row);
+    });
+  }
+  render();
+</script>
+</body>
+</html>

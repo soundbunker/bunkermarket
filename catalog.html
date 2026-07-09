@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>마켓 · 벙커마켓</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="dot"></span>벙커마켓</a>
+    <nav>
+      <a href="index.html#sounds">소리</a>
+      <a href="catalog.html">마켓</a>
+      <a href="nfc.html">NFC 카드</a>
+      <a class="cart-btn" href="#">🛒 장바구니</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" style="background:linear-gradient(160deg,var(--sea),var(--tide) 130%)">
+  <div class="wrap" style="padding:56px 22px 60px">
+    <span class="kicker">MARKET</span>
+    <h1 style="font-size:clamp(28px,5vw,44px)">소리가 키운 것들</h1>
+    <p class="lead">카테고리와 소리(산지)로 골라보세요.</p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    <!-- 카테고리 필터 -->
+    <div class="filters" id="catFilters"></div>
+    <!-- 소리(산지) 필터 -->
+    <div class="filters" id="soundFilters"></div>
+    <div class="prod-grid" id="grid"></div>
+    <p class="muted center" id="empty" style="display:none;padding:40px">조건에 맞는 상품이 없어요.</p>
+  </div>
+</section>
+
+<footer class="site"><div class="wrap">
+  <div class="col"><div class="brand" style="font-size:20px"><span class="dot" style="background:var(--tide-lite);box-shadow:none"></span> 벙커마켓</div>
+  <p style="font-size:14px">소리가 키운 것.</p></div>
+</div></footer>
+
+<script src="js/data.js"></script>
+<script src="js/ocean.js"></script>
+<script src="js/store.js"></script>
+<script src="js/app.js"></script>
+<script>
+  let state = { cat: U.qs('cat') || 'all', sound: U.qs('s') || 'all' };
+
+  // 카테고리 칩
+  const cf = document.getElementById('catFilters');
+  const cats = [['all','전체']].concat(Object.entries(BUNKER.CATEGORIES).map(([k,v])=>[k, v.icon+' '+v.label]));
+  cats.forEach(([k,label])=>{
+    const c=document.createElement('button'); c.className='chip'+(state.cat===k?' active':''); c.textContent=label;
+    c.onclick=()=>{ state.cat=k; sync(); render(); }; cf.appendChild(c);
+  });
+
+  // 소리(산지) 칩
+  const sf = document.getElementById('soundFilters');
+  const soundsWithItems = BUNKER.SOUNDS.filter(s=>U.listingsForSound(s.id).length);
+  [['all','🌊 모든 소리']].concat(soundsWithItems.map(s=>[s.id, s.region.area+' · '+s.title]))
+    .forEach(([k,label])=>{
+      const c=document.createElement('button'); c.className='chip'+(state.sound===k?' active':''); c.textContent=label;
+      c.onclick=()=>{ state.sound=k; sync(); render(); }; sf.appendChild(c);
+    });
+
+  function sync(){
+    [...cf.children].forEach(c=>c.classList.toggle('active',
+      c.textContent===(state.cat==='all'?'전체':BUNKER.CATEGORIES[state.cat].icon+' '+BUNKER.CATEGORIES[state.cat].label)));
+    [...sf.children].forEach((c,i)=>{
+      const key = i===0?'all':soundsWithItems[i-1].id;
+      c.classList.toggle('active', key===state.sound);
+    });
+  }
+
+  function render(){
+    const grid=document.getElementById('grid'); grid.innerHTML='';
+    const list = BUNKER.LISTINGS.filter(l=>
+      (state.cat==='all'||l.category===state.cat) &&
+      (state.sound==='all'||l.soundId===state.sound));
+    document.getElementById('empty').style.display = list.length?'none':'block';
+    list.forEach(l=>grid.appendChild(UI.productCard(l)));
+  }
+  render();
+</script>
+</body>
+</html>
