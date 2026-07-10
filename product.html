@@ -70,9 +70,12 @@
     const action = document.getElementById('action');
     if(cat.mode !== 'inquiry'){
       // 농산물 등: 외부 판매처로 이동
+      const noteText = U.hasLink(l)
+        ? '판매처(외부 사이트)로 이동합니다.'
+        : '아직 지정 판매처가 없어 네이버쇼핑 검색으로 연결됩니다.';
       action.innerHTML = `
-        <a class="btn btn-accent" href="${U.buyLink(l)}" target="_blank" rel="noopener" style="display:inline-block">${cat.cta} ↗</a>
-        <p class="muted" style="font-size:13px;margin-top:10px">판매처(외부 사이트)로 이동합니다.</p>`;
+        <a class="btn btn-accent" href="${U.buyLink(l)}" target="_blank" rel="noopener" style="display:inline-block">${U.buyLabel(l)}</a>
+        <p class="muted" style="font-size:13px;margin-top:10px">${noteText}</p>`;
     } else {
       // 문의형 (소리 좋은 집 등)
       action.innerHTML = `<a class="btn btn-accent" href="#inquiry">${cat.cta} ↓</a>`;

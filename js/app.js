@@ -15,8 +15,17 @@ const U = {
     if(l.link) return l.link;
     if(U.category(l.category).mode === 'inquiry')
       return `mailto:hello@bunkermarket.kr?subject=${encodeURIComponent('[문의] '+l.title)}`;
-    const q = encodeURIComponent(`${l.producer||''} ${l.title}`.trim());
+    // 폴백: 실제 판매처 URL이 없을 때. 존재하지 않는 농가명은 빼고
+    // 상품명만으로 검색해야 실제 결과가 나온다.
+    const q = encodeURIComponent(l.searchQuery || l.title);
     return `https://search.shopping.naver.com/search/all?query=${q}`;
+  },
+  hasLink(l){ return !!l.link; },
+  // 버튼 문구: 실제 판매처면 CTA, 없으면 '검색'임을 정직하게 표기
+  buyLabel(l){
+    const cat = U.category(l.category);
+    if(cat.mode === 'inquiry') return cat.cta;
+    return U.hasLink(l) ? (cat.cta + ' ↗') : '네이버쇼핑에서 찾기 ↗';
   },
   // hue → 바다빛 그라디언트
   grad(hue){ return `linear-gradient(155deg, hsl(${hue} 55% 26%), hsl(${(hue+22)%360} 60% 16%))`; },
@@ -67,7 +76,7 @@ const UI = {
     const ext = cat.mode !== 'inquiry';        // 외부 사이트면 새 탭
     const attr = ext ? 'target="_blank" rel="noopener"' : '';
     const btnCls = cat.mode === 'inquiry' ? 'btn btn-line btn-sm' : 'btn btn-accent btn-sm';
-    const btnLabel = (cat.cta || '보러 가기') + (ext ? ' ↗' : '');
+    const btnLabel = U.buyLabel(l);
     const el = document.createElement('div');
     el.className='prod-card';
     el.innerHTML = `

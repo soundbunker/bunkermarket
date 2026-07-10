@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>소리 · 벙커마켓</title>
+<meta name="description" content="NFC 카드를 태그하면 이 바다의 소리가 흐릅니다. 그 소리가 흐르는 바닷가에서 자란 것들을 만나보세요.">
+<!-- 공유 미리보기 (카카오톡·문자·SNS). 개별 소리별 이미지는 og.png 준비 후 교체 -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="벙커마켓">
+<meta property="og:title" content="벙커마켓 · 바다 소리를 태그하다">
+<meta property="og:description" content="NFC 카드를 태그하면 바다의 소리가 흐르고, 그 소리가 흐르는 바닷가의 것들을 만납니다.">
+<meta property="og:image" content="assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -75,9 +83,11 @@
     // 재생 버튼 (자동재생은 브라우저 정책상 탭 후 클릭 유도)
     const player = hero.querySelector('#player');
     const bp = hero.querySelector('#bigPlay');
+    let started = false;
     bp.onclick = ()=> Ocean.toggle(s, on=>{
       bp.textContent = on ? '❚❚' : '▶';
       player.classList.toggle('playing', on);
+      if(on){ started = true; player.classList.remove('need-tap'); }
     });
 
     // 소리가 키운 것
@@ -106,8 +116,12 @@
     const mg = more.querySelector('#more');
     BUNKER.SOUNDS.filter(x=>x.id!==s.id).slice(0,4).forEach(x=>mg.appendChild(UI.soundCard(x)));
 
-    // NFC 로 들어온 경우: 소리 자동 재생 시도 (실패해도 무방)
-    setTimeout(()=>{ if(U.qs('autoplay')==='1'){ bp.click(); } }, 300);
+    // NFC 로 들어온 경우: 소리 자동 재생 시도. 브라우저가 막으면(특히 iOS)
+    // 재생버튼을 펄스시켜 '탭해서 듣기'를 유도한다.
+    setTimeout(()=>{
+      if(U.qs('autoplay')==='1'){ bp.click(); }
+      setTimeout(()=>{ if(!started) player.classList.add('need-tap'); }, 500);
+    }, 300);
   }
 </script>
 </body>

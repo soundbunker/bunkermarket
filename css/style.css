@@ -134,6 +134,9 @@ section.block{padding:70px 0}
 .detail-hero .story{margin-top:20px;max-width:56ch;font-size:16px;opacity:.92}
 .player{margin-top:28px;display:flex;align-items:center;gap:16px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:10px 10px 10px 20px;max-width:440px;backdrop-filter:blur(6px)}
 .player .big-play{width:52px;height:52px;border-radius:50%;background:#fff;color:var(--sea);border:0;font-size:20px;cursor:pointer;flex:0 0 auto;display:flex;align-items:center;justify-content:center}
+/* 자동재생이 막혔을 때 탭 유도 펄스 */
+.player.need-tap .big-play{animation:tapPulse 1.3s ease-in-out infinite}
+@keyframes tapPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.55);transform:scale(1)}50%{box-shadow:0 0 0 12px rgba(255,255,255,0);transform:scale(1.06)}}
 .player .meta{font-size:13px;line-height:1.35}
 .player .wavebar{flex:1;height:26px;display:flex;align-items:center;gap:2px;overflow:hidden}
 .player .wavebar i{flex:1;background:rgba(255,255,255,.5);border-radius:2px;height:6px}
