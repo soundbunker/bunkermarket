@@ -177,7 +177,7 @@ img = base(); d = brand(img)
 kicker(d, "조건은요?", 200)
 y = 270
 for big, small in [("입점비 0원", "내실 돈이 없습니다"),
-                   ("수수료 0원", "판매는 농부님 판매처에서 그대로"),
+                   ("지금은 수수료 0원", "판매는 농부님 판매처에서 그대로"),
                    ("과장 없음", "“소리가 흐르는 곳에서 자란” — 사실만 말합니다")]:
     d.text((70, y), big, font=font(64), fill=FOAM)
     d.text((70, y+82), small, font=font(36, False), fill=(255,255,255,190))
@@ -202,7 +202,7 @@ for i, t in enumerate(items, 1):
 pill = Image.new("RGBA", (W, H), (0,0,0,0)); pd = ImageDraw.Draw(pill)
 pd.rounded_rectangle([70, y+40, W-70, y+180], 34, fill=(255,255,255,28), outline=(255,255,255,80), width=2)
 img.alpha_composite(pill); d = ImageDraw.Draw(img)
-d.text((110, y+72), "hello@bunkermarket.kr", font=font(46), fill=FOAM)
+d.text((110, y+72), "play@soundb.kr", font=font(46), fill=FOAM)
 d.text((110, y+134), "마르셰 장터에서 직접 만나실 수도 있어요", font=font(30, False), fill=(255,255,255,180))
 pagenum(d, 6)
 img.convert("RGB").save(f"{OUT}/card-6.png")

@@ -14,7 +14,7 @@ const U = {
   buyLink(l){
     if(l.link) return l.link;
     if(U.category(l.category).mode === 'inquiry')
-      return `mailto:hello@bunkermarket.kr?subject=${encodeURIComponent('[문의] '+l.title)}`;
+      return `mailto:play@soundb.kr?subject=${encodeURIComponent('[문의] '+l.title)}`;
     // 폴백: 실제 판매처 URL이 없을 때. 존재하지 않는 농가명은 빼고
     // 상품명만으로 검색해야 실제 결과가 나온다.
     const q = encodeURIComponent(l.searchQuery || l.title);
