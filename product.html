@@ -27,7 +27,6 @@
 
 <script src="js/data.js"></script>
 <script src="js/ocean.js"></script>
-<script src="js/store.js"></script>
 <script src="js/app.js"></script>
 <script>
   const l = BUNKER.LISTINGS.find(x=>x.id===U.qs('p'));
@@ -91,8 +90,10 @@
         </section>`;
       document.getElementById('inqForm').onsubmit=(e)=>{
         e.preventDefault();
-        UI.toast('문의가 접수되었어요. 곧 연락드릴게요 🌊');
-        e.target.reset();
+        const f=new FormData(e.target);
+        const body=`이름: ${f.get('name')}\n연락처: ${f.get('phone')}\n희망 내용: ${f.get('msg')||'-'}\n상품: ${l.title}`;
+        location.href=`mailto:play@soundb.kr?subject=${encodeURIComponent('[문의] '+l.title)}&body=${encodeURIComponent(body)}`;
+        UI.toast('메일 앱이 열려요. 보내기를 눌러주세요 🌊');
       };
     }
   }
