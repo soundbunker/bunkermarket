@@ -29,13 +29,12 @@
 
 <main id="app"><!-- 렌더 --></main>
 
-<footer class="site">
-  <div class="wrap">
-    <div class="col"><div class="brand" style="font-size:20px"><span class="dot" style="background:var(--tide-lite);box-shadow:none"></span> 벙커마켓</div>
-      <p style="font-size:14px">소리가 흐르는 곳.</p></div>
-    <div class="col"><h4>마켓</h4><a href="catalog.html">전체 상품</a><a href="nfc.html">NFC 카드</a></div>
-  </div>
-</footer>
+<footer class="site"><div class="wrap">
+  <div class="col"><div class="brand" style="font-size:20px"><span class="dot" style="background:var(--tide-lite);box-shadow:none"></span> 벙커마켓</div>
+    <p style="font-size:14px">소리가 흐르는 곳.</p></div>
+  <div class="col"><h4>마켓</h4><a href="catalog.html">전체 상품</a><a href="nfc.html">NFC 카드</a></div>
+  <div class="col"><h4>문의</h4><a href="mailto:play@soundb.kr">play@soundb.kr</a></div>
+</div></footer>
 
 <script src="js/data.js"></script>
 <script src="js/ocean.js"></script>
@@ -52,6 +51,7 @@
   } else {
     document.title = `${s.title} · 벙커마켓`;
     const items = U.listingsForSound(s.id);
+    const fromTag = U.qs('autoplay') === '1';   // NFC 카드로 들어온 손님
 
     // 히어로
     const hero = document.createElement('section');
@@ -62,7 +62,8 @@
         <path fill="#fff" opacity=".08" d="M0,240 C300,320 560,160 820,220 C1080,280 1240,200 1440,250 L1440,400 L0,400 Z"/>
       </svg>
       <div class="wrap">
-        <div class="code">${s.code} · 📡 NFC 태그됨</div>
+        <div class="code">${s.code}${fromTag ? ' · 📡 카드 태그 완료' : ''}</div>
+        ${fromTag ? `<p style="margin:10px 0 2px;font-size:16px;color:rgba(255,255,255,.9)">카드를 대셨네요 — 여기는 <b>${s.region.spot}</b>의 소리 페이지예요.</p>` : ''}
         <h1>${s.title}</h1>
         <div class="spot">${s.region.country} · ${s.region.area} · ${s.region.spot}</div>
         <div class="player" id="player">
@@ -83,11 +84,14 @@
     const player = hero.querySelector('#player');
     const bp = hero.querySelector('#bigPlay');
     let started = false;
-    bp.onclick = ()=> Ocean.toggle(s, on=>{
-      bp.textContent = on ? '❚❚' : '▶';
-      player.classList.toggle('playing', on);
-      if(on){ started = true; player.classList.remove('need-tap'); }
-    });
+    bp.onclick = ()=>{
+      if(!Ocean.isPlaying(s.id)) bp.textContent = '…';   // 로딩 표시
+      Ocean.toggle(s, on=>{
+        bp.textContent = on ? '❚❚' : '▶';
+        player.classList.toggle('playing', on);
+        if(on){ started = true; player.classList.remove('need-tap'); }
+      });
+    };
 
     // 소리가 흐르는 곳의 것
     const sec = document.createElement('section');

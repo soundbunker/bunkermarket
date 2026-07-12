@@ -22,7 +22,10 @@
 <main id="app" class="wrap" style="padding:40px 22px 70px"></main>
 
 <footer class="site"><div class="wrap">
-  <div class="col"><div class="brand" style="font-size:20px"><span class="dot" style="background:var(--tide-lite);box-shadow:none"></span> 벙커마켓</div></div>
+  <div class="col"><div class="brand" style="font-size:20px"><span class="dot" style="background:var(--tide-lite);box-shadow:none"></span> 벙커마켓</div>
+    <p style="font-size:14px">소리가 흐르는 곳.</p></div>
+  <div class="col"><h4>마켓</h4><a href="catalog.html">전체 상품</a><a href="nfc.html">NFC 카드</a></div>
+  <div class="col"><h4>문의</h4><a href="mailto:play@soundb.kr">play@soundb.kr</a></div>
 </div></footer>
 
 <script src="js/data.js"></script>
@@ -40,7 +43,7 @@
 
     app.innerHTML = `
       <a class="muted" href="catalog.html" style="font-size:14px">← 마켓</a>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:18px;align-items:start" id="cols">
+      <div class="detail-cols" style="margin-top:18px" id="cols">
         <div class="prod-thumb" style="background:${U.grad(s.tone.hue)};border-radius:var(--radius);aspect-ratio:1;position:relative">
           <span class="cat">${cat.icon} ${cat.label}</span>
           <span style="font-size:96px">${U.emoji(l)}</span>
@@ -49,7 +52,11 @@
           <div class="from" style="color:var(--tide);font-size:13px;margin-bottom:10px">🌊 <a href="sound.html?s=${s.id}"><b>${s.title}</b></a> 소리가 흐르는 곳</div>
           <h1 class="serif" style="font-size:34px;letter-spacing:-.01em">${l.title}</h1>
           <p class="muted" style="margin-top:6px">${l.producer}</p>
-          <div class="serif" style="font-size:30px;margin:18px 0">${U.krw(l.price)} <span class="muted" style="font-family:var(--sans);font-size:15px">/ ${l.unit}</span></div>
+          <div class="serif" style="font-size:30px;margin:18px 0">${
+            (cat.mode==='inquiry' || U.hasLink(l))
+              ? `${U.krw(l.price)} <span class="muted" style="font-family:var(--sans);font-size:15px">/ ${l.unit}</span>`
+              : `<span class="muted" style="font-family:var(--sans);font-size:17px">가격·재고는 판매처에서 확인해주세요</span>`
+          }</div>
           <p style="font-size:16px">${l.short}</p>
           <p class="muted" style="margin-top:12px">${l.story}</p>
 
@@ -61,9 +68,12 @@
       </div>
       <div id="inquiry"></div>`;
 
-    // 소리 듣기
+    // 소리 듣기 (누르면 즉시 로딩 표시 → 재생 상태 반영)
     const lb = document.getElementById('listen');
-    lb.onclick=()=>Ocean.toggle(s, on=>lb.innerHTML = on ? '❚❚ 재생 중…' : '▶ 이 바닷가의 소리 듣기');
+    lb.onclick=()=>{
+      if(!Ocean.isPlaying(s.id)) lb.innerHTML = '… 소리 여는 중';
+      Ocean.toggle(s, on=>lb.innerHTML = on ? '❚❚ 재생 중…' : '▶ 이 바닷가의 소리 듣기');
+    };
 
     // 구매/문의 액션 (카테고리별 분기)
     const action = document.getElementById('action');

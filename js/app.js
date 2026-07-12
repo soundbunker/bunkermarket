@@ -88,7 +88,11 @@ const UI = {
         <div class="from">🌊 <a href="sound.html?s=${s.id}">${s.title}</a> 소리가 흐르는 곳</div>
         <h3><a href="${href}" ${attr}>${l.title}</a></h3>
         <div class="short">${l.short}</div>
-        <div class="price">${U.krw(l.price)}<small>/ ${l.unit}</small></div>
+        <div class="price">${
+          (cat.mode==='inquiry' || U.hasLink(l))
+            ? `${U.krw(l.price)}<small>/ ${l.unit}</small>`
+            : `<small class="muted" style="font-weight:500">가격은 판매처에서 확인</small>`
+        }</div>
         <div class="prod-actions">
           <a class="${btnCls}" href="${href}" ${attr}>${btnLabel}</a>
         </div>

@@ -69,7 +69,7 @@ img{max-width:100%;display:block}
 .btn-dark:hover{background:var(--sea-2)}
 .btn-line{background:transparent;border:1.5px solid var(--sea);color:var(--sea)}
 .btn-line:hover{background:var(--sea);color:var(--foam)}
-.btn-sm{padding:9px 16px;font-size:13px}
+.btn-sm{padding:11px 18px;font-size:14px;min-height:44px}
 .btn[disabled]{opacity:.45;cursor:not-allowed}
 
 /* --- 섹션 ----------------------------------------------------------------*/
@@ -122,7 +122,9 @@ section.block{padding:70px 0}
 
 /* --- 필터 바 -------------------------------------------------------------*/
 .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:26px}
-.chip{border:1.5px solid var(--line);background:#fff;color:var(--muted);padding:8px 16px;border-radius:999px;font-size:13.5px;cursor:pointer;transition:all .18s}
+/* 상품 상세 2단 (모바일에선 1단 스택) */
+.detail-cols{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.chip{border:1.5px solid var(--line);background:#fff;color:var(--muted);padding:11px 18px;border-radius:999px;font-size:14px;min-height:44px;cursor:pointer;transition:all .18s}
 .chip.active{background:var(--sea);color:var(--foam);border-color:var(--sea)}
 
 /* --- 소리 상세(sound.html) ----------------------------------------------*/
@@ -196,7 +198,14 @@ footer.site .col a{display:block;font-size:14px;margin-bottom:8px}
 /* --- 반응형 --------------------------------------------------------------*/
 @media(max-width:760px){
   .steps{grid-template-columns:1fr}
-  .nav nav a:not(.cart-btn){display:none}
+  /* 모바일에서도 내비 유지 (NFC 유입 = 모바일) — 크기만 축소 */
+  .nav nav{gap:13px;font-size:13px}
   .hero .wrap{padding:60px 22px 70px}
   section.block{padding:50px 0}
+  /* 상품 상세: 이미지 위 / 정보 아래 1단 스택 */
+  .detail-cols{grid-template-columns:1fr;gap:24px}
+  /* 필터 칩: 세로로 쌓지 말고 한 줄 가로 스크롤 */
+  .filters{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px}
+  .filters::-webkit-scrollbar{display:none}
+  .chip{flex:0 0 auto;white-space:nowrap}
 }
