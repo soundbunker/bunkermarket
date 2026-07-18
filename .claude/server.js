@@ -12,10 +12,10 @@ http.createServer((req, res) => {
   let p = decodeURIComponent(req.url.split('?')[0]);
   if (p === '/') p = '/index.html';
   const file = path.join(ROOT, p);
-  if (!file.startsWith(ROOT)) { res.writeHead(403); return res.end('forbidden'); }
+  if (!file.startsWith(ROOT + path.sep)) { res.writeHead(403); return res.end('forbidden'); }
   fs.readFile(file, (err, data) => {
     if (err) { res.writeHead(404); return res.end('not found'); }
     res.writeHead(200, { 'Content-Type': MIME[path.extname(file)] || 'application/octet-stream' });
     res.end(data);
   });
-}).listen(PORT, () => console.log('bunkermarket on http://localhost:' + PORT));
+}).listen(PORT, '127.0.0.1', () => console.log('bunkermarket on http://localhost:' + PORT));

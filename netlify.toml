@@ -4,5 +4,15 @@
   publish = "."
   command = ""
 
+# 보안 헤더 (인라인 스크립트/스타일을 쓰는 구조라 unsafe-inline 허용)
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
+
 # SPA가 아니라 실제 .html 파일들이므로 별도 리다이렉트 불필요.
 # 커스텀 도메인(bunkermarket.kr 등) 연결은 Netlify 대시보드 > Domain settings 에서.

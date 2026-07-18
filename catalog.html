@@ -50,6 +50,9 @@
 <script src="js/app.js"></script>
 <script>
   let state = { cat: U.qs('cat') || 'all', sound: U.qs('s') || 'all' };
+  // 존재하지 않는 카테고리/소리 파라미터는 무시 (조작된 URL로 렌더가 깨지지 않게)
+  if(state.cat!=='all' && !BUNKER.CATEGORIES[state.cat]) state.cat='all';
+  if(state.sound!=='all' && !U.soundById(state.sound)) state.sound='all';
 
   // 카테고리 칩
   const cf = document.getElementById('catFilters');
