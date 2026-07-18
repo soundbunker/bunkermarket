@@ -195,8 +195,40 @@ footer.site .col a{display:block;font-size:14px;margin-bottom:8px}
 .nfc-banner h3{font-family:var(--serif);font-size:22px;margin-bottom:4px}
 .nfc-banner p{font-size:14px;opacity:.9}
 
+/* --- 큐레이션(컬리 방법론 이식) ----------------------------------------- */
+/* 큐레이터 노트: '왜 이걸 골랐나'를 담는 에디토리얼 블록 */
+.curator-note{background:#fff;border:1px solid var(--line);border-left:3px solid var(--accent);
+  border-radius:14px;padding:18px 20px;margin-top:22px}
+.curator-note .lbl{display:flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.06em;
+  color:var(--tide);font-weight:600;margin-bottom:8px;text-transform:uppercase}
+.curator-note .lbl .av{width:22px;height:22px;border-radius:50%;background:var(--tide);color:#fff;
+  display:inline-flex;align-items:center;justify-content:center;font-size:12px}
+.curator-note p{font-family:var(--serif);font-size:16px;line-height:1.7;color:var(--ink)}
+
+/* 산지 정보 스펙표: 컬리 상품정보 스타일 */
+.spec{margin-top:24px;border-top:1px solid var(--line)}
+.spec .row{display:flex;padding:13px 2px;border-bottom:1px solid var(--line);font-size:14.5px}
+.spec .row dt{width:104px;flex:0 0 auto;color:var(--muted)}
+.spec .row dd{color:var(--ink)}
+
+/* PLP 큐레이션 배지 */
+.prod-thumb .pick{position:absolute;top:12px;right:12px;background:var(--sea);color:var(--foam);
+  font-size:11px;font-weight:600;padding:5px 10px;border-radius:999px;letter-spacing:.02em}
+
+/* sticky 구매바: 컬리의 대표 전환 장치 (모바일 하단 고정) */
+.buybar{position:fixed;left:0;right:0;bottom:0;z-index:70;display:none;
+  align-items:center;gap:14px;padding:12px 18px calc(12px + env(safe-area-inset-bottom));
+  background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line);
+  box-shadow:0 -8px 24px -14px rgba(8,40,58,.4)}
+.buybar .bp{flex:1;min-width:0}
+.buybar .bp .t{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.buybar .bp .v{font-family:var(--serif);font-size:19px;line-height:1.15}
+.buybar .btn{flex:0 0 auto}
+
 /* --- 반응형 --------------------------------------------------------------*/
 @media(max-width:760px){
+  .buybar{display:flex}
+  main.wrap{padding-bottom:96px !important}
   .steps{grid-template-columns:1fr}
   /* 모바일에서도 내비 유지 (NFC 유입 = 모바일) — 크기만 축소 */
   .nav nav{gap:13px;font-size:13px}

@@ -82,6 +82,7 @@ const UI = {
     el.innerHTML = `
       <a class="prod-thumb" href="${href}" ${attr} style="background:${U.grad(s.tone.hue)}">
         <span class="cat">${cat.icon} ${cat.label}</span>
+        <span class="pick">🌊 산지 큐레이션</span>
         <span class="emoji">${U.emoji(l)}</span>
       </a>
       <div class="prod-body">

@@ -60,13 +60,41 @@
           <p style="font-size:16px">${l.short}</p>
           <p class="muted" style="margin-top:12px">${l.story}</p>
 
+          ${l.curatorNote ? `
+          <div class="curator-note">
+            <div class="lbl"><span class="av">🌊</span> 큐레이터 노트</div>
+            <p>${l.curatorNote}</p>
+          </div>` : ''}
+
           <!-- 소리 미리듣기 -->
           <button class="btn btn-line" id="listen" style="margin-top:20px">▶ 이 바닷가의 소리 듣기</button>
 
           <div id="action" style="margin-top:24px"></div>
+
+          <!-- 산지 정보 (컬리 상품정보 스타일) -->
+          <dl class="spec">
+            <div class="row"><dt>산지</dt><dd>${s.region.country} · ${s.region.area} · ${s.region.spot}</dd></div>
+            <div class="row"><dt>연결된 소리</dt><dd>${s.code} · ${s.title}</dd></div>
+            <div class="row"><dt>소리 녹음</dt><dd>${s.recordedAt}</dd></div>
+            ${U.hasLink(l) ? '' : `<div class="row"><dt>판매</dt><dd>지정 판매처 준비 중 · 네이버쇼핑 검색으로 안내</dd></div>`}
+            <div class="row"><dt>취급</dt><dd>${cat.mode==='inquiry' ? '실물 확인 후 안내 (문의형)' : '주문·배송·정산은 판매처에서 진행'}</dd></div>
+          </dl>
         </div>
       </div>
       <div id="inquiry"></div>`;
+
+    // sticky 구매바 (모바일) — 컬리의 대표 전환 장치
+    if(cat.mode !== 'inquiry'){
+      const bar = document.createElement('div');
+      bar.className = 'buybar';
+      const priceHtml = U.hasLink(l)
+        ? `${U.krw(l.price)} <span style="font-size:13px;color:var(--muted)">/ ${l.unit}</span>`
+        : '가격은 판매처에서';
+      bar.innerHTML = `
+        <div class="bp"><div class="t">${l.title}</div><div class="v">${priceHtml}</div></div>
+        <a class="btn btn-accent" href="${U.buyLink(l)}" target="_blank" rel="noopener">${U.buyLabel(l)}</a>`;
+      document.body.appendChild(bar);
+    }
 
     // 소리 듣기 (누르면 즉시 로딩 표시 → 재생 상태 반영)
     const lb = document.getElementById('listen');
