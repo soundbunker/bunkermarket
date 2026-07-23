@@ -216,15 +216,15 @@ const LISTINGS = [
     id: 'p-jejualoe',
     soundId: 'jeju-seongsan',
     category: 'produce',
-    link: 'https://smartstore.naver.com/jejualoe',
-    image: 'assets/listings/jejualoe-aloe.jpg',   // 농장 사진 (판매자 홈페이지 제공)
-    title: '제주알로에 · 알로에와 건강즙',
-    producer: '제주알로에 · 스레드 친구',
+    link: 'https://smartstore.naver.com/jejualoe/products/3857942464',
+    image: 'assets/listings/jejualoe-yachaesu.jpg',   // 판매처 대표 이미지 (판매자 제공)
+    title: '제주농장 유기농 야채수',
+    producer: '제주농장(제주알로에) · 스레드 친구',
     origin: '제주 서귀포 표선면',
     price: null, unit: '',
-    short: '30년 넘게 알로에를 키워온 표선 농장의 알로에와 건강즙',
-    story: '표선면 2만 평 농장에서 30년 넘게 알로에를 국내 재배해 온 농가입니다. 알로에와 건강즙, 과채주스를 스토어에서 판매합니다. 벙커마켓은 수수료 없이 스토어로 바로 연결합니다.',
-    curatorNote: '마르쉐 장터에서 함께 소개하는 스친의 알로에 농장입니다. 클릭하면 스마트스토어로 바로 이동해요.',
+    short: '무·당근·우엉·무청·표고를 한 포에 담은 100% 유기농 야채수',
+    story: '30년 넘게 알로에를 키워온 표선 농장 제주농장의 유기농 야채수입니다. 다섯 가지 유기농 야채를 한 포에 담았어요. 벙커마켓은 수수료 없이 판매 페이지로 바로 연결합니다.',
+    curatorNote: '마르쉐 장터에서 함께 소개하는 스친의 야채수입니다. 클릭하면 스마트스토어 판매 페이지로 바로 이동해요.',
   },
 
   // 👉 새 상품은 여기에. 어떤 소리(soundId)가 키웠는지만 연결하면 됩니다.
