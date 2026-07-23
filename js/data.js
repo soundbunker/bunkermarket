@@ -240,6 +240,20 @@ const LISTINGS = [
     story: '애월에서 온 여름 제철 미니밤호박입니다. 밤처럼 포슬하고 단맛이 진해요. 벙커마켓은 수수료 없이 판매 페이지로 바로 연결합니다.',
     curatorNote: '마르쉐 장터에서 함께 소개하는 스친의 미니밤호박입니다. 클릭하면 스마트스토어 판매 페이지로 바로 이동해요.',
   },
+  {
+    id: 'p-toctoc-citrus',
+    soundId: 'jeju-sagye',
+    category: 'produce',
+    link: 'https://smartstore.naver.com/bongbong-island',
+    image: 'assets/listings/toctoc-citrus.jpg',   // 판매자 네이버 플레이스 사진
+    title: '톡톡아일랜드 · 산지직송 제주 감귤',
+    producer: '톡톡아일랜드 · 스레드 친구',
+    origin: '제주 서귀포 남원읍 하례리',
+    price: null, unit: '',
+    short: '하례리 돌담 귤밭에서 산지직송으로 오는 제주의 달콤함',
+    story: '서귀포 남원읍 하례리의 감귤 농가입니다. 착한 농부가 땀 흘려 농사지어 산지직송으로 보내드려요. 벙커마켓은 수수료 없이 스토어로 바로 연결합니다.',
+    curatorNote: '마르쉐 장터에서 함께 소개하는 스친의 귤 농가입니다. 클릭하면 스마트스토어로 바로 이동해요.',
+  },
 
   // 👉 새 상품은 여기에. 어떤 소리(soundId)가 키웠는지만 연결하면 됩니다.
 ];
