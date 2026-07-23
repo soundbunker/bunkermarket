@@ -182,85 +182,6 @@ const SOUNDS = [
 /* link : 실제 판매처 URL (네이버스토어·자사몰·농가 링크 등).                  */
 /*        비워두면 → 상품명으로 네이버쇼핑 검색 링크가 자동 생성됨.            */
 const LISTINGS = [
-  /* ── 농산물 ─────────────────────────────────────────────────── */
-  {
-    id: 'p-gimnyeong-carrot',
-    soundId: 'jeju-gimnyeong',
-    category: 'produce',
-    link: '',   // ← 실제 판매처 URL
-    title: '김녕 구좌 당근',
-    producer: '구좌 해밭농원',
-    price: 15000, unit: '3kg',
-    short: '현무암 저음이 울리는 밭에서 자란 구좌 당근',
-    story: '검은 화산토와 깊은 파도의 리듬 속에서 당도 높게 자랍니다.',
-    curatorNote: '구좌 검은 화산토에서 자란 당근입니다. 씹을 때 올라오는 단맛이 좋아 이 밭을 골랐어요.',
-    stock: 25,
-  },
-  {
-    id: 'p-seongsan-broccoli',
-    soundId: 'jeju-seongsan',
-    category: 'produce',
-    link: '',   // ← 실제 판매처 URL
-    title: '성산 브로콜리',
-    producer: '일출밭 협동조합',
-    price: 12000, unit: '2kg',
-    short: '새벽바다 물안개를 먹고 큰 단단한 브로콜리',
-    story: '해 뜨기 전 낮은 파도와 물새 소리 속에서 천천히 여뭅니다.',
-    curatorNote: '새벽 물안개가 오래 머무는 성산 밭입니다. 송이가 촘촘하고 단단한 것만 담았어요.',
-    stock: 30,
-  },
-  {
-    id: 'p-sagye-potato',
-    soundId: 'jeju-sagye',
-    category: 'produce',
-    link: '',   // ← 실제 판매처 URL
-    title: '사계 흑감자',
-    producer: '산방밭 이농부',
-    price: 11000, unit: '2kg',
-    short: '바람파도를 견디며 단단해진 제주 감자',
-    story: '거친 바람과 물결을 이겨낸 만큼 조직이 치밀하고 포슬합니다.',
-    curatorNote: '거센 바닷바람을 정면으로 받는 사계 밭입니다. 조직이 치밀해 삶으면 포슬한 감자예요.',
-    stock: 50,
-  },
-  {
-    id: 'p-udo-peanut',
-    soundId: 'jeju-udo',
-    category: 'produce',
-    link: '',   // ← 실제 판매처 URL
-    title: '우도 땅콩',
-    producer: '우도 하고수동 농가',
-    price: 18000, unit: '600g',
-    short: '나른한 만의 파도가 흐르는 밭에서 자란 고소한 우도 땅콩',
-    story: '따뜻하고 느린 파도 아래 작지만 기름지고 고소하게 여뭅니다.',
-    curatorNote: '방파제 안쪽 느린 볕을 받는 우도 땅콩입니다. 작지만 기름지고 고소한 알만 골랐어요.',
-    stock: 35,
-  },
-  {
-    id: 'p-woljeong-cabbage',
-    soundId: 'jeju-woljeong',
-    category: 'produce',
-    link: '',   // ← 실제 판매처 URL
-    title: '월정 양배추',
-    producer: '월정리 포말농장',
-    price: 9000, unit: '1통',
-    short: '은빛 포말 소리 아래 자란 아삭한 양배추',
-    story: '길게 스미는 파도의 습기를 머금어 잎이 두껍고 아삭합니다.',
-    curatorNote: '포말의 습기를 길게 머금는 월정 밭입니다. 잎이 두껍고 아삭한 양배추예요.',
-    stock: 60,
-  },
-  {
-    id: 'p-anmok-corn',
-    soundId: 'gangneung-anmok',
-    category: 'produce',
-    link: '',   // ← 실제 판매처 URL
-    title: '강릉 초당옥수수',
-    producer: '안목 바다밭',
-    price: 16000, unit: '10개',
-    short: '동해 너울 소리를 들으며 여문 초당옥수수',
-    story: '깊고 긴 너울의 리듬 속에서 알이 꽉 차고 달게 익습니다.',
-    curatorNote: '동해 너울이 길게 닿는 안목 밭입니다. 생으로도 단 알만 담았어요.',
-    stock: 45,
-  },
 
   /* ── 스레드 스친 (마르쉐 연결 · 수수료 없음 · 판매처 직행) ────── */
   {
@@ -304,34 +225,6 @@ const LISTINGS = [
     short: '30년 넘게 알로에를 키워온 표선 농장의 알로에와 건강즙',
     story: '표선면 2만 평 농장에서 30년 넘게 알로에를 국내 재배해 온 농가입니다. 알로에와 건강즙, 과채주스를 스토어에서 판매합니다. 벙커마켓은 수수료 없이 스토어로 바로 연결합니다.',
     curatorNote: '마르쉐 장터에서 함께 소개하는 스친의 알로에 농장입니다. 클릭하면 스마트스토어로 바로 이동해요.',
-  },
-
-  /* ── 소리 좋은 집 (향후 확장 · 문의형) ──────────────────────── */
-  {
-    id: 'h-woljeong-house',
-    soundId: 'jeju-woljeong',
-    category: 'stay',
-    link: '',   // ← 매물/문의 링크 (비우면 이메일 문의)
-    title: '월정 파도소리 돌집',
-    producer: '벙커마켓 큐레이션',
-    price: 480000000, unit: '매매',
-    short: '침실 창을 열면 은빛 포말 소리가 그대로 드는 제주 돌집',
-    story: '바다에서 120m. 파도가 길게 스미는 S-006 의 소리가 온종일 머무는 집.',
-    curatorNote: '바다에서 120m, 파도가 온종일 낮게 드는 자리입니다. 소리를 기준으로 고른 집이에요.',
-    stock: 1,
-  },
-  {
-    id: 'h-udo-stay',
-    soundId: 'jeju-udo',
-    category: 'stay',
-    link: '',   // ← 매물/문의 링크 (비우면 이메일 문의)
-    title: '우도 나른한 만 목조주택',
-    producer: '벙커마켓 큐레이션',
-    price: 320000000, unit: '매매',
-    short: '느린 파도가 창을 채우는 우도의 단층 목조주택',
-    story: '방파제 안쪽 나른한 물결(S-005)이 하루 종일 낮게 깔리는 자리.',
-    curatorNote: '방파제 안쪽 나른한 물결이 창을 채우는 단층집입니다. 조용함을 원하는 분께 권합니다.',
-    stock: 1,
   },
 
   // 👉 새 상품은 여기에. 어떤 소리(soundId)가 키웠는지만 연결하면 됩니다.
