@@ -226,6 +226,20 @@ const LISTINGS = [
     story: '30년 넘게 알로에를 키워온 표선 농장 제주농장의 유기농 야채수입니다. 다섯 가지 유기농 야채를 한 포에 담았어요. 벙커마켓은 수수료 없이 판매 페이지로 바로 연결합니다.',
     curatorNote: '마르쉐 장터에서 함께 소개하는 스친의 야채수입니다. 클릭하면 스마트스토어 판매 페이지로 바로 이동해요.',
   },
+  {
+    id: 'p-jejujoa-bamhobak',
+    soundId: 'jeju-hyeopjae',
+    category: 'produce',
+    link: 'https://smartstore.naver.com/jejujoa/products/4917766929',
+    image: 'assets/listings/jejujoa-bamhobak.jpg',   // 판매처 대표 이미지 (판매자 제공)
+    title: '애월 미니밤호박',
+    producer: '제주청춘농장 · 스레드 친구',
+    origin: '제주 애월',
+    price: null, unit: '',
+    short: '애월 바닷바람 아래 여문 포슬포슬한 미니밤호박',
+    story: '애월에서 온 여름 제철 미니밤호박입니다. 밤처럼 포슬하고 단맛이 진해요. 벙커마켓은 수수료 없이 판매 페이지로 바로 연결합니다.',
+    curatorNote: '마르쉐 장터에서 함께 소개하는 스친의 미니밤호박입니다. 클릭하면 스마트스토어 판매 페이지로 바로 이동해요.',
+  },
 
   // 👉 새 상품은 여기에. 어떤 소리(soundId)가 키웠는지만 연결하면 됩니다.
 ];
