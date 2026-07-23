@@ -281,6 +281,7 @@ const LISTINGS = [
     soundId: 'jeju-hyeopjae',
     category: 'produce',
     link: 'https://smartstore.naver.com/theyoos/products/6838162232',
+    image: 'assets/listings/theyoos-pumpkin.jpg',   // 판매처 대표 이미지 (판매자 제공)
     title: '여름 단호박',
     producer: '더유스 · 스레드 친구',
     origin: '판매처 상세페이지 참고',

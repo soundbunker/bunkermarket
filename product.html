@@ -47,7 +47,9 @@
       <div class="detail-cols" style="margin-top:18px" id="cols">
         <div class="prod-thumb" style="background:${U.grad(s.tone.hue)};border-radius:var(--radius);aspect-ratio:1;position:relative">
           <span class="cat">${cat.icon} ${cat.label}</span>
-          <span style="font-size:96px">${U.emoji(l)}</span>
+          ${l.image
+            ? `<img class="photo" src="${l.image}" alt="${l.title}">`
+            : `<span style="font-size:96px">${U.emoji(l)}</span>`}
         </div>
         <div>
           <div class="from" style="color:var(--tide);font-size:13px;margin-bottom:10px">🌊 <a href="sound.html?s=${s.id}"><b>${s.title}</b></a> 소리가 흐르는 곳</div>

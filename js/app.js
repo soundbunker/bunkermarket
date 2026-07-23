@@ -83,7 +83,9 @@ const UI = {
       <a class="prod-thumb" href="${href}" ${attr} style="background:${U.grad(s.tone.hue)}">
         <span class="cat">${cat.icon} ${cat.label}</span>
         <span class="pick">🌊 산지 큐레이션</span>
-        <span class="emoji">${U.emoji(l)}</span>
+        ${l.image
+          ? `<img class="photo" src="${l.image}" alt="${l.title}" loading="lazy">`
+          : `<span class="emoji">${U.emoji(l)}</span>`}
       </a>
       <div class="prod-body">
         <div class="from">🌊 <a href="sound.html?s=${s.id}">${s.title}</a> 소리가 흐르는 곳</div>
