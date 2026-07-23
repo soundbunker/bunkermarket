@@ -275,6 +275,21 @@ const LISTINGS = [
     stock: 45,
   },
 
+  /* ── 스레드 스친 (마르쉐 연결 · 수수료 없음 · 판매처 직행) ────── */
+  {
+    id: 'p-theyoos-pumpkin',
+    soundId: 'jeju-hyeopjae',
+    category: 'produce',
+    link: 'https://smartstore.naver.com/theyoos/products/6838162232',
+    title: '여름 단호박',
+    producer: '더유스 · 스레드 친구',
+    origin: '판매처 상세페이지 참고',
+    price: null, unit: '',
+    short: '파도 소리 아래에서 소개하는 스친의 여름 제철 단호박',
+    story: '스레드에서 만난 이웃 판매자의 제철 단호박입니다. 벙커마켓은 수수료 없이 판매 페이지로 바로 연결합니다.',
+    curatorNote: '마르쉐 장터에서 함께 소개하는 스친의 단호박입니다. 클릭하면 스마트스토어 판매 페이지로 바로 이동해요.',
+  },
+
   /* ── 소리 좋은 집 (향후 확장 · 문의형) ──────────────────────── */
   {
     id: 'h-woljeong-house',

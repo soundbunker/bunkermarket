@@ -54,7 +54,7 @@
           <h1 class="serif" style="font-size:34px;letter-spacing:-.01em">${l.title}</h1>
           <p class="muted" style="margin-top:6px">${l.producer}</p>
           <div class="serif" style="font-size:30px;margin:18px 0">${
-            (cat.mode==='inquiry' || U.hasLink(l))
+            ((cat.mode==='inquiry' || U.hasLink(l)) && l.price != null)
               ? `${U.krw(l.price)} <span class="muted" style="font-family:var(--sans);font-size:15px">/ ${l.unit}</span>`
               : `<span class="muted" style="font-family:var(--sans);font-size:17px">가격·재고는 판매처에서 확인해주세요</span>`
           }</div>
@@ -74,7 +74,7 @@
 
           <!-- 산지 정보 (컬리 상품정보 스타일) -->
           <dl class="spec">
-            <div class="row"><dt>산지</dt><dd>${s.region.country} · ${s.region.area} · ${s.region.spot}</dd></div>
+            <div class="row"><dt>산지</dt><dd>${l.origin ? l.origin : s.region.country+' · '+s.region.area+' · '+s.region.spot}</dd></div>
             <div class="row"><dt>연결된 소리</dt><dd>${s.code} · ${s.title}</dd></div>
             <div class="row"><dt>소리 녹음</dt><dd>${s.recordedAt}</dd></div>
             ${U.hasLink(l) ? '' : `<div class="row"><dt>판매</dt><dd>지정 판매처 준비 중 · 네이버쇼핑 검색으로 안내</dd></div>`}
@@ -88,7 +88,7 @@
     if(cat.mode !== 'inquiry'){
       const bar = document.createElement('div');
       bar.className = 'buybar';
-      const priceHtml = U.hasLink(l)
+      const priceHtml = (U.hasLink(l) && l.price != null)
         ? `${U.krw(l.price)} <span style="font-size:13px;color:var(--muted)">/ ${l.unit}</span>`
         : '가격은 판매처에서';
       bar.innerHTML = `

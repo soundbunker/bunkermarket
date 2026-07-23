@@ -31,7 +31,7 @@ const U = {
   grad(hue){ return `linear-gradient(155deg, hsl(${hue} 55% 26%), hsl(${(hue+22)%360} 60% 16%))`; },
   emoji(listing){
     const map={ '마늘':'🧄','당근':'🥕','브로콜리':'🥦','감자':'🥔','땅콩':'🥜',
-      '양배추':'🥬','옥수수':'🌽','집':'🏡','주택':'🏡' };
+      '양배추':'🥬','옥수수':'🌽','호박':'🎃','집':'🏡','주택':'🏡' };
     for(const k in map){ if(listing.title.includes(k)) return map[k]; }
     return U.category(listing.category).icon;
   },
@@ -90,7 +90,7 @@ const UI = {
         <h3><a href="${href}" ${attr}>${l.title}</a></h3>
         <div class="short">${l.short}</div>
         <div class="price">${
-          (cat.mode==='inquiry' || U.hasLink(l))
+          ((cat.mode==='inquiry' || U.hasLink(l)) && l.price != null)
             ? `${U.krw(l.price)}<small>/ ${l.unit}</small>`
             : `<small class="muted" style="font-weight:500">가격은 판매처에서 확인</small>`
         }</div>
