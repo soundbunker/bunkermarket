@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://bunkermarket.goatcounter.com; media-src 'self'; connect-src 'self' https://bunkermarket.goatcounter.com; object-src 'none'; base-uri 'self'">
 <title>벙커마켓 · 소리가 흐르는 곳</title>
 <meta name="description" content="제주 파도 소리가 흐르는 곳에서 자란 농산물. NFC 카드로 소리를 태그하면, 그 바닷가의 것들을 만납니다.">
 <!-- 공유 미리보기 -->
@@ -126,5 +126,6 @@
   const pg = document.getElementById('prodGrid');
   BUNKER.LISTINGS.slice(0,4).forEach(l => pg.appendChild(UI.productCard(l)));
 </script>
+<script data-goatcounter="https://bunkermarket.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </body>
 </html>

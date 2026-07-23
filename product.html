@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://bunkermarket.goatcounter.com; media-src 'self'; connect-src 'self' https://bunkermarket.goatcounter.com; object-src 'none'; base-uri 'self'">
 <title>상품 · 벙커마켓</title>
 <link rel="stylesheet" href="css/style.css">
 </head>
@@ -95,7 +95,7 @@
         : '가격은 판매처에서';
       bar.innerHTML = `
         <div class="bp"><div class="t">${l.title}</div><div class="v">${priceHtml}</div></div>
-        <a class="btn btn-accent" href="${U.buyLink(l)}" target="_blank" rel="noopener">${U.buyLabel(l)}</a>`;
+        <a class="btn btn-accent" href="${U.buyLink(l)}" target="_blank" rel="noopener" data-track="buy-${l.id}" data-track-title="${l.title}">${U.buyLabel(l)}</a>`;
       document.body.appendChild(bar);
     }
 
@@ -114,7 +114,7 @@
         ? '판매처(외부 사이트)로 이동합니다.'
         : '아직 지정 판매처가 없어 네이버쇼핑 검색으로 연결됩니다.';
       action.innerHTML = `
-        <a class="btn btn-accent" href="${U.buyLink(l)}" target="_blank" rel="noopener" style="display:inline-block">${U.buyLabel(l)}</a>
+        <a class="btn btn-accent" href="${U.buyLink(l)}" target="_blank" rel="noopener" data-track="buy-${l.id}" data-track-title="${l.title}" style="display:inline-block">${U.buyLabel(l)}</a>
         <p class="muted" style="font-size:13px;margin-top:10px">${noteText}</p>`;
     } else {
       // 문의형 (소리 좋은 집 등)
@@ -139,5 +139,6 @@
     }
   }
 </script>
+<script data-goatcounter="https://bunkermarket.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </body>
 </html>

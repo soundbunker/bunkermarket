@@ -77,10 +77,11 @@ const UI = {
     const attr = ext ? 'target="_blank" rel="noopener"' : '';
     const btnCls = cat.mode === 'inquiry' ? 'btn btn-line btn-sm' : 'btn btn-accent btn-sm';
     const btnLabel = U.buyLabel(l);
+    const track = `data-track="buy-${l.id}" data-track-title="${l.title}"`;
     const el = document.createElement('div');
     el.className='prod-card';
     el.innerHTML = `
-      <a class="prod-thumb" href="${href}" ${attr} style="background:${U.grad(s.tone.hue)}">
+      <a class="prod-thumb" href="${href}" ${attr} ${track} style="background:${U.grad(s.tone.hue)}">
         <span class="cat">${cat.icon} ${cat.label}</span>
         <span class="pick">🌊 산지 큐레이션</span>
         ${l.image
@@ -89,7 +90,7 @@ const UI = {
       </a>
       <div class="prod-body">
         <div class="from">🌊 <a href="sound.html?s=${s.id}">${s.title}</a> 소리가 흐르는 곳</div>
-        <h3><a href="${href}" ${attr}>${l.title}</a></h3>
+        <h3><a href="${href}" ${attr} ${track}>${l.title}</a></h3>
         <div class="short">${l.short}</div>
         <div class="price">${
           ((cat.mode==='inquiry' || U.hasLink(l)) && l.price != null)
@@ -97,10 +98,17 @@ const UI = {
             : `<small class="muted" style="font-weight:500">가격은 판매처에서 확인</small>`
         }</div>
         <div class="prod-actions">
-          <a class="${btnCls}" href="${href}" ${attr}>${btnLabel}</a>
+          <a class="${btnCls}" href="${href}" ${attr} ${track}>${btnLabel}</a>
         </div>
       </div>`;
     return el;
   },
 
 };
+
+/* --- 판매처 클릭 집계 (GoatCounter 이벤트) --------------------------------*/
+document.addEventListener('click', (e)=>{
+  const a = e.target.closest('a[data-track]');
+  if(a && window.goatcounter && typeof goatcounter.count === 'function')
+    goatcounter.count({ path: a.dataset.track, title: a.dataset.trackTitle || a.dataset.track, event: true });
+});
