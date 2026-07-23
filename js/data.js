@@ -184,19 +184,6 @@ const SOUNDS = [
 const LISTINGS = [
   /* ── 농산물 ─────────────────────────────────────────────────── */
   {
-    id: 'p-hyeopjae-garlic',
-    soundId: 'jeju-hyeopjae',
-    category: 'produce',
-    link: '',   // ← 실제 판매처 URL
-    title: '협재 통마늘',
-    producer: '협재리 김농부',
-    price: 13000, unit: '1kg',
-    short: '맑고 높은 파도 소리 아래 자란 단단한 제주 마늘',
-    story: '얕은 바다의 미네랄 바람을 맞고 자라 알이 단단하고 향이 진합니다.',
-    curatorNote: '얕고 맑은 협재 앞바다의 바람이 닿는 밭입니다. 알이 크지 않아도 단단하게 여문 것만 골랐어요.',
-    stock: 40,
-  },
-  {
     id: 'p-gimnyeong-carrot',
     soundId: 'jeju-gimnyeong',
     category: 'produce',
@@ -289,6 +276,20 @@ const LISTINGS = [
     short: '파도 소리 아래에서 소개하는 스친의 여름 제철 단호박',
     story: '스레드에서 만난 이웃 판매자의 제철 단호박입니다. 벙커마켓은 수수료 없이 판매 페이지로 바로 연결합니다.',
     curatorNote: '마르쉐 장터에서 함께 소개하는 스친의 단호박입니다. 클릭하면 스마트스토어 판매 페이지로 바로 이동해요.',
+  },
+  {
+    id: 'p-murung-bundle',
+    soundId: 'jeju-moseulpo',
+    category: 'produce',
+    link: 'https://smartstore.naver.com/murungfarm/products/3220323361',
+    image: 'assets/listings/murungfarm-bundle.jpg',   // 판매처 대표 이미지 (판매자 제공)
+    title: '제주 제철 농산물 꾸러미 (정기구독)',
+    producer: '무릉외갓집 · 스레드 친구',
+    origin: '제주 서귀포 대정읍 무릉리',
+    price: null, unit: '',
+    short: '모슬포 갯바람이 닿는 무릉리에서 다달이 오는 제철 꾸러미',
+    story: '무릉리 농가들이 그때그때 가장 좋은 제철 농산물을 담아 다달이 보내는 정기구독 꾸러미입니다. 벙커마켓은 수수료 없이 판매 페이지로 바로 연결합니다.',
+    curatorNote: '마르쉐 장터에서 함께 소개하는 스친의 꾸러미입니다. 클릭하면 스마트스토어 판매 페이지로 바로 이동해요.',
   },
 
   /* ── 소리 좋은 집 (향후 확장 · 문의형) ──────────────────────── */
