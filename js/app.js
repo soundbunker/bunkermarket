@@ -54,6 +54,7 @@ const UI = {
     el.innerHTML = `
       <div class="sc-overlay"></div>
       <span class="code">${s.code}</span>
+      <span class="live eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
       <button class="play" aria-label="소리 듣기">▶</button>
       <div style="position:relative;z-index:2">
         <h3>${s.title}</h3>
@@ -63,7 +64,12 @@ const UI = {
     const btn = el.querySelector('.play');
     btn.addEventListener('click', (e)=>{
       e.preventDefault();
-      Ocean.toggle(s, on=>{ btn.innerHTML = on ? '<span class="eq"><i></i><i></i><i></i><i></i></span>' : '▶'; });
+      if(!Ocean.isPlaying(s.id)) btn.textContent = '…';   // 로딩 표시
+      Ocean.toggle(s, on=>{
+        btn.textContent = on ? '❚❚' : '▶';
+        btn.setAttribute('aria-label', on ? '일시정지' : '소리 듣기');
+        el.classList.toggle('playing', on);
+      });
     });
     return el;
   },

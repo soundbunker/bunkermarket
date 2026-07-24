@@ -6,6 +6,7 @@
  * ==========================================================================*/
 const Ocean = (() => {
   let current = null;               // 현재 재생 중인 컨트롤러
+  let seq = 0;                      // 재생 세대 토큰 — 늦게 로드된 오디오의 중첩 재생 방지
   let ctx = null;
 
   function getCtx(){
@@ -60,18 +61,32 @@ const Ocean = (() => {
     };
   }
 
-  /* 파일 재생 시도, 실패 시 합성으로 폴백 */
+  /* 파일 재생 시도, 실패 시 합성으로 폴백.
+   * settled 가드: 타임아웃/교체 이후 늦게 로드된 파일이 몰래 재생을 시작해
+   * 합성음과 겹치던 버그를 막는다. */
   function playFile(sound){
     return new Promise((resolve)=>{
-      const a = new Audio(sound.soundFile);
-      a.loop = true;
+      const a = new Audio();
+      a.loop = true; a.preload = 'auto';
+      let settled = false;
+      const fail = ()=>{
+        if(settled) return;
+        settled = true;
+        try{ a.pause(); a.removeAttribute('src'); a.load(); }catch(e){}
+        resolve(null);
+      };
       a.addEventListener('canplaythrough', ()=>{
-        a.play().then(()=>resolve({stop(){a.pause();a.currentTime=0;}}))
-                .catch(()=>resolve(null));
+        if(settled) return;
+        a.play().then(()=>{
+          if(settled){ try{a.pause();}catch(e){} return; }
+          settled = true;
+          resolve({ stop(){ try{ a.pause(); a.removeAttribute('src'); a.load(); }catch(e){} } });
+        }).catch(fail);
       }, {once:true});
-      a.addEventListener('error', ()=>resolve(null), {once:true});
-      // 파일이 없으면 error 이벤트가 늦게 올 수 있어 타임아웃 폴백
-      setTimeout(()=>{ if(a.readyState < 3){ resolve(null); } }, 1200);
+      a.addEventListener('error', fail, {once:true});
+      // 파일이 없거나 너무 느리면 합성 파도로 폴백
+      setTimeout(()=>{ if(a.readyState < 3) fail(); }, 4000);
+      a.src = sound.soundFile;
       a.load();
     });
   }
@@ -80,7 +95,10 @@ const Ocean = (() => {
     // 이미 이 소리가 재생 중이면 정지
     if(current && current.id === sound.id){ stop(); onState && onState(false); return false; }
     stop();
+    const my = ++seq;
     let ctrl = await playFile(sound);
+    // 로딩 중에 다른 소리가 시작됐거나 정지됐다면, 이 결과는 폐기
+    if(my !== seq){ if(ctrl) ctrl.stop(); onState && onState(false); return false; }
     if(!ctrl) ctrl = synth(sound.tone ? sound.tone.hue : 200);   // 폴백
     current = { id: sound.id, ctrl, onState };
     onState && onState(true);
@@ -88,6 +106,7 @@ const Ocean = (() => {
   }
 
   function stop(){
+    seq++;   // 진행 중이던 로딩도 무효화
     if(current){
       current.ctrl.stop();
       current.onState && current.onState(false);
