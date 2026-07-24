@@ -14,6 +14,7 @@ const SeaMap = (() => {
   /* 라벨 미세조정: a(anchor) dx dy — 겹침 방지 수작업 배치 */
   const LABEL = {
     yongduam:   { dy: -9 },
+    goneuldong: { a: 'end', dx: -12, dy: -6 },
     aljakji:    { dy: 15 },
     hado:       { a: 'end', dx: -12 },
     udo:        { a: 'end', dx: -12 },
@@ -22,6 +23,8 @@ const SeaMap = (() => {
     chagwido:   { dy: -11 },
     suwolbong:  { dy: 16 },
     gapado:     { dy: -12 },
+    jarimul:    { dy: -9 },
+    jebi:       { a: 'end', dx: -12 },
     sojeongbang:{ dy: 16 },
     gangjeongcheon: { dy: 16 },
     jungmun:    { dy: 16 },
@@ -71,7 +74,14 @@ const SeaMap = (() => {
           </g>
           ${pins}
         </svg>
-        <div class="seamap-now" id="seamapNow">🌊 핀을 누르면 그 바다의 소리가 들려요</div>
+        <div class="seamap-transport">
+          <div class="np" id="seamapNow">🌊 핀을 누르면 그 바다의 소리가 들려요</div>
+          <div class="tc">
+            <button class="tb" data-act="prev" aria-label="이전 소리" title="이전 소리">⏮</button>
+            <button class="tb stop" data-act="stop" aria-label="정지" title="정지">⏹</button>
+            <button class="tb" data-act="next" aria-label="다음 소리" title="다음 소리">⏭</button>
+          </div>
+        </div>
         ${offMap.length ? `<div class="seamap-chips">
           ${offMap.map(s=>`<button class="chip" data-id="${s.id}">▶ ${s.title}</button>`).join('')}
           <span class="off-note">— 지도 밖의 소리</span>
@@ -79,21 +89,53 @@ const SeaMap = (() => {
       </div>`;
 
     const now = el.querySelector('#seamapNow');
+    const transport = el.querySelector('.seamap-transport');
+    const order = onMap.concat(offMap);   // 이전/다음 넘김 순서 (지도 표시 순)
+    let cur = -1;                          // 현재 재생 인덱스 (없으면 -1)
+
+    // 재생 상태를 지도·컨트롤 바에 반영 (Ocean.toggle 의 onState 콜백)
+    function paint(on){
+      el.querySelectorAll('.pin,.chip').forEach(n=>n.classList.remove('playing'));
+      if(on && cur >= 0){
+        const s = order[cur];
+        transport.classList.add('active');
+        const node = el.querySelector(`[data-id="${s.id}"]`);
+        if(node) node.classList.add('playing');
+        now.innerHTML = `<span class="eq"><i></i><i></i><i></i><i></i></span>&ensp;${s.code} · <b>${s.title}</b> — ${s.region.area} · ${s.region.spot}`;
+      } else {
+        transport.classList.remove('active');
+        now.innerHTML = '🌊 핀을 누르면 그 바다의 소리가 들려요';
+      }
+    }
+
+    function playIndex(i){
+      cur = ((i % order.length) + order.length) % order.length;   // 순환
+      const s = order[cur];
+      if(!Ocean.isPlaying(s.id)) now.textContent = `… ${s.title} 여는 중`;
+      Ocean.toggle(s, paint);
+      if(window.goatcounter && typeof goatcounter.count === 'function')
+        goatcounter.count({ path:'map-'+s.id, title:'지도 재생 '+s.title, event:true });
+    }
+
+    function togglePin(s){
+      if(Ocean.isPlaying(s.id)){ Ocean.stop(); cur = -1; }   // stop → paint(false)
+      else playIndex(order.indexOf(s));
+    }
+
     el.querySelectorAll('.pin,.chip').forEach(node=>{
-      const s = sounds.find(x=>x.id===node.dataset.id);
-      const play = ()=>{
-        if(!Ocean.isPlaying(s.id)) now.textContent = `… ${s.title} 여는 중`;
-        Ocean.toggle(s, on=>{
-          node.classList.toggle('playing', on);
-          now.innerHTML = on
-            ? `<span class="eq"><i></i><i></i><i></i><i></i></span>&ensp;${s.code} · <b>${s.title}</b> — ${s.region.area} · ${s.region.spot}&ensp;<span style="opacity:.55">(다시 누르면 멈춰요)</span>`
-            : '🌊 핀을 누르면 그 바다의 소리가 들려요';
-          if(on && window.goatcounter && typeof goatcounter.count==='function')
-            goatcounter.count({ path:'map-'+s.id, title:'지도 재생 '+s.title, event:true });
-        });
-      };
-      node.addEventListener('click', play);
-      node.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); play(); } });
+      const s = order.find(x=>x.id===node.dataset.id);
+      const go = ()=>togglePin(s);
+      node.addEventListener('click', go);
+      node.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } });
+    });
+
+    transport.querySelectorAll('.tb').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const act = btn.dataset.act;
+        if(act === 'stop'){ Ocean.stop(); cur = -1; }
+        else if(act === 'next'){ playIndex(cur < 0 ? 0 : cur + 1); }
+        else if(act === 'prev'){ playIndex(cur < 0 ? 0 : cur - 1); }
+      });
     });
   }
 

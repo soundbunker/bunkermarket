@@ -53,15 +53,15 @@ const SOUNDS = [
   {
     id: 'goneuldong',
     code: 'S-002',
-    title: '고늘동 물결',
-    subtitle: '동네 바닷가를 오가는 잔잔한 물결',
-    region: { country: '대한민국', area: '제주', spot: '고늘동' },
-    coords: null,
+    title: '곤을동 바다',
+    subtitle: '화북 바닷가 옛 마을 터를 적시는 잔잔한 물결',
+    region: { country: '대한민국', area: '제주시', spot: '화북 곤을동' },
+    coords: { lat: 33.523, lng: 126.566 },
     recordedAt: '2022-03',
     tone: { hue: 195 },
-    tags: ['잔잔', '동네바다'],
+    tags: ['잔잔', '해안마을'],
     story:
-      '관광지가 아닌 동네의 바닷가. 크게 목소리를 높이지 않는 ' +
+      '제주시 화북, 바다에 면한 곤을동 마을 앞. 크게 목소리를 높이지 않는 ' +
       '물결이 갯바위 사이를 천천히 오간다.',
     soundFile: 'assets/sounds/goneuldong.mp3',
   },
@@ -84,14 +84,14 @@ const SOUNDS = [
     id: 'jarimul',
     code: 'S-004',
     title: '자리물',
-    subtitle: '바닷가에 솟는 물, 자리물 곁의 소리',
-    region: { country: '대한민국', area: '제주', spot: '자리물' },
-    coords: null,
+    subtitle: '조천 바닷가에 솟는 물, 자리물 곁의 소리',
+    region: { country: '대한민국', area: '제주 조천', spot: '조천 자리물' },
+    coords: { lat: 33.539, lng: 126.634 },
     recordedAt: '2022-01',
     tone: { hue: 175 },
     tags: ['맑음', '가까움'],
     story:
-      '물가에 바짝 다가가 담은 소리. 크지 않은 물결이 ' +
+      '조천 바닷가, 물가에 바짝 다가가 담은 소리. 크지 않은 물결이 ' +
       '아주 가까이에서 찰랑인다.',
     soundFile: 'assets/sounds/jarimul.mp3',
   },
@@ -158,15 +158,15 @@ const SOUNDS = [
   {
     id: 'jebi',
     code: 'S-010',
-    title: '제비 물소리',
-    subtitle: '물가를 스치는 바람과 물의 소리',
-    region: { country: '대한민국', area: '제주', spot: '제비' },
-    coords: null,
+    title: '표선리 제비',
+    subtitle: '표선 바닷가, 물과 바람이 스치는 자리',
+    region: { country: '대한민국', area: '제주 표선', spot: '표선리 제비' },
+    coords: { lat: 33.325, lng: 126.836 },
     recordedAt: '2025-09',
     tone: { hue: 250 },
     tags: ['바람', '물가'],
     story:
-      '제비라는 이름이 붙은 물가에서 담아온 소리. ' +
+      '표선 바닷가, 제비라 불리는 자리에서 담아온 소리. ' +
       '물과 바람이 스치듯 오간다.',
     soundFile: 'assets/sounds/jebi.mp3',
   },
@@ -235,8 +235,8 @@ const SOUNDS = [
     code: 'S-017',
     title: '판포포구',
     subtitle: '투명한 물빛의 작은 포구',
-    region: { country: '대한민국', area: '제주 한경', spot: '판포포구' },
-    coords: { lat: 33.348, lng: 126.235 },
+    region: { country: '대한민국', area: '제주 한경', spot: '한경면 판포리' },
+    coords: { lat: 33.366, lng: 126.201 },
     recordedAt: '2024-07',
     tone: { hue: 190 },
     tags: ['포구', '투명', '아늑'],
