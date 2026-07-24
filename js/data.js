@@ -431,6 +431,20 @@ const LISTINGS = [
     story: '서귀포 남원읍 하례리의 감귤 농가입니다. 착한 농부가 땀 흘려 농사지어 산지직송으로 보내드려요. 벙커마켓은 수수료 없이 스토어로 바로 연결합니다.',
     curatorNote: '마르쉐 장터에서 함께 소개하는 스친의 귤 농가입니다. 클릭하면 스마트스토어로 바로 이동해요.',
   },
+  {
+    id: 'p-mukk-dripbag',
+    soundId: 'handam',
+    category: 'produce',
+    link: 'https://smartstore.naver.com/mukk_mukk/products/11391995505',
+    image: 'assets/listings/mukk-dripbag.jpg',   // 판매자 공식 사이트(mukk.co.kr) 상품 이미지
+    title: '먹 mukk · 제로 카페인 먹 드립백',
+    producer: '먹 mukk · 스레드 친구',
+    origin: '제주 애월읍 납읍리',
+    price: null, unit: '',
+    short: '제주 토종 흑보리로 내리는 카페인 없는 한 잔',
+    story: '애월 납읍리에서 제주 토종 흑보리를 기르고 볶는 대체커피 브랜드 먹(mukk)입니다. 흑보리와 작두콩을 블렌딩한 제로 카페인 드립백이에요. 벙커마켓은 수수료 없이 판매 페이지로 바로 연결합니다.',
+    curatorNote: '마르쉐 장터에서 함께 소개하는 스친의 드립백입니다. 클릭하면 스마트스토어 판매 페이지로 바로 이동해요.',
+  },
 
   // 👉 새 상품은 여기에. 어떤 소리(soundId)가 키웠는지만 연결하면 됩니다.
 ];
