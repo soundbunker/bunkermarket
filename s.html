@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; base-uri 'self'">
+<title>소리 여는 중 · 벙커마켓</title>
+<!--
+  NFC 카드용 초경량 리다이렉트.
+  카드에는 짧은 주소만 새긴다:  .../s.html?1   (숫자 = 소리 코드 S-001)
+                              .../s.html?yongduam  (id 도 허용)
+  → 진짜 착지 페이지 sound.html 로 자동 이동(자동재생).
+-->
+</head>
+<body style="margin:0;background:#0b1a1f;color:#cfe;font-family:system-ui,sans-serif;display:flex;height:100vh;align-items:center;justify-content:center">
+<p>🌊 소리를 여는 중…</p>
+<script src="js/data.js"></script>
+<script>
+  (function(){
+    var q = decodeURIComponent((location.search || '').slice(1)).trim();
+    // 뒤에 =붙는 경우(빈 값 파라미터) 방어
+    if(q.indexOf('=') > -1) q = q.split('=')[0];
+    var s = null;
+    if(/^\d+$/.test(q)){
+      var code = 'S-' + ('00' + q).slice(-3);          // 1 → S-001, 18 → S-018
+      s = window.BUNKER.SOUNDS.find(function(x){ return x.code === code; });
+    }
+    if(!s) s = window.BUNKER.SOUNDS.find(function(x){ return x.id === q; });
+    var target = s
+      ? ('sound.html?s=' + encodeURIComponent(s.id) + '&autoplay=1')
+      : 'index.html#soundmap';                          // 못 찾으면 홈 지도로
+    location.replace(target);
+  })();
+</script>
+</body>
+</html>

@@ -84,7 +84,8 @@
     render(); UI.toast('저장했어요');
   };
 
-  function urlFor(s){ return `${base.replace(/\/$/,'')}/sound.html?s=${s.id}&autoplay=1`; }
+  // NFC 카드엔 짧은 주소를 새긴다: .../s.html?<코드번호>  (예: S-018 → 18)
+  function urlFor(s){ return `${base.replace(/\/$/,'')}/s.html?${parseInt(s.code.slice(2),10)}`; }
 
   // Web NFC 지원 여부
   const sup = document.getElementById('nfcSupport');
