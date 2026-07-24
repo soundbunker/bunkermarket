@@ -24,7 +24,7 @@
     <a class="brand" href="index.html"><span class="dot"></span>벙커마켓</a>
     <nav>
       <a href="index.html#concept">이야기</a>
-      <a href="index.html#sounds">소리</a>
+      <a href="index.html#soundmap">소리</a>
       <a href="catalog.html">마켓</a>
       <a href="nfc.html">NFC 카드</a>
     </nav>
@@ -43,7 +43,7 @@
     <p class="lead">우리는 바다의 소리를 모읍니다. 그 소리가 흐르는 땅에서 자란 것들을 함께 잇습니다.
       NFC 카드를 태그하면 — 파도 소리가 흐르고, 그 바닷가의 것들을 만나게 됩니다.</p>
     <div class="cta-row">
-      <a class="btn btn-accent" href="#sounds">🌊 소리 둘러보기</a>
+      <a class="btn btn-accent" href="#soundmap">🌊 소리 둘러보기</a>
       <a class="btn btn-ghost" href="catalog.html">마켓 들어가기 →</a>
     </div>
   </div>
@@ -71,20 +71,10 @@
 <section class="block" id="soundmap">
   <div class="wrap">
     <div class="sec-head">
-      <div><h2>제주 소리 지도</h2><p>핀을 누르면 그 바다의 소리가 바로 들려요. 한 번에 하나의 바다만 흐릅니다.</p></div>
-    </div>
-    <div id="seamap"></div>
-  </div>
-</section>
-
-<!-- 소리 그리드 -->
-<section class="block" id="sounds" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
-  <div class="wrap">
-    <div class="sec-head">
-      <div><h2>바다의 소리</h2><p>재생 버튼을 눌러 미리 들어보세요. 전국 · 전 세계로 계속 늘어납니다.</p></div>
+      <div><h2>바다의 소리</h2><p>핀을 누르면 그 바다의 소리가 바로 들려요. 한 번에 하나의 바다만 흐릅니다.</p></div>
       <a class="btn btn-line btn-sm" href="catalog.html">전체 마켓 →</a>
     </div>
-    <div class="sound-grid" id="soundGrid"></div>
+    <div id="seamap"></div>
   </div>
 </section>
 
@@ -121,7 +111,7 @@
     <div class="col"><h4>마켓</h4>
       <a href="catalog.html">전체 상품</a><a href="catalog.html?cat=produce">농산물</a><a href="catalog.html?cat=stay">소리 좋은 집</a></div>
     <div class="col"><h4>소리</h4>
-      <a href="index.html#sounds">소리 아카이브</a><a href="nfc.html">NFC 카드</a></div>
+      <a href="index.html#soundmap">소리 아카이브</a><a href="nfc.html">NFC 카드</a></div>
     <div class="col"><h4>문의</h4>
       <a href="mailto:play@soundb.kr">play@soundb.kr</a></div>
   </div>
@@ -133,8 +123,6 @@
 <script src="js/seamap.js"></script>
 <script>
   SeaMap.render(document.getElementById('seamap'), BUNKER.SOUNDS);
-  const grid = document.getElementById('soundGrid');
-  BUNKER.SOUNDS.forEach(s => grid.appendChild(UI.soundCard(s)));
   const pg = document.getElementById('prodGrid');
   BUNKER.LISTINGS.slice(0,4).forEach(l => pg.appendChild(UI.productCard(l)));
 </script>

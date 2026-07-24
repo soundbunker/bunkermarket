@@ -111,24 +111,31 @@ section.block{padding:70px 0}
 .sound-card.playing .play{background:#fff}
 @keyframes seaPulse{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-3px) scale(1.015)}}
 
-/* 제주 소리 지도 */
-.seamap-panel{background:linear-gradient(160deg,#0d2b33,#123a45 55%,#0c2830);border-radius:var(--radius);padding:16px 14px 12px;box-shadow:var(--shadow)}
+/* 제주 소리 지도 — 전시관 에디션 (검은 바탕, 세선 에칭) */
+.seamap-panel{position:relative;background:radial-gradient(120% 140% at 50% 0%,#101216 0%,#0a0b0d 55%,#060708 100%);border:1px solid rgba(255,255,255,.07);border-radius:var(--radius);padding:22px 20px 14px;box-shadow:0 30px 60px -30px rgba(0,0,0,.55)}
+.seamap-cap{display:flex;align-items:baseline;gap:14px;padding:0 4px 14px;flex-wrap:wrap}
+.seamap-cap .en{font-size:11px;letter-spacing:.32em;color:rgba(255,255,255,.38)}
+.seamap-cap .ko{font-family:var(--serif);font-size:15px;color:rgba(255,255,255,.75)}
 .seamap-panel svg{width:100%;height:auto;display:block}
-.seamap-panel .isle{fill:rgba(255,255,255,.12);stroke:rgba(255,255,255,.34);stroke-width:2;stroke-linejoin:round}
-.seamap-panel .inset rect{fill:none;stroke:rgba(255,255,255,.22);stroke-dasharray:5 6}
-.seamap-panel .inset text{fill:rgba(255,255,255,.55);font-size:15px}
+.seamap-panel .isle{fill:#14171d;stroke:rgba(255,255,255,.5);stroke-width:1;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.seamap-panel .inset rect{fill:rgba(255,255,255,.015);stroke:rgba(255,255,255,.16);stroke-dasharray:3 6;stroke-width:1}
 .pin{cursor:pointer;outline:none}
-.pin .dot{stroke:#fff;stroke-width:2;transform-box:fill-box;transform-origin:center;transition:transform .15s}
-.pin:hover .dot,.pin:focus .dot{transform:scale(1.35)}
-.pin .halo{fill:none;stroke:#fff;stroke-opacity:0;transform-box:fill-box;transform-origin:center}
-.pin.playing .dot{transform:scale(1.35);stroke-width:3}
-.pin.playing .halo{animation:mapPing 1.5s ease-out infinite}
-@keyframes mapPing{0%{transform:scale(.6);stroke-opacity:.8}100%{transform:scale(2.2);stroke-opacity:0}}
-.seamap-now{color:rgba(255,255,255,.88);font-size:14px;padding:12px 8px 6px;min-height:24px}
-.seamap-chips{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:8px 8px 6px}
-.seamap-chips .chip{border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08);color:#fff;border-radius:999px;padding:7px 14px;font-size:13px;cursor:pointer;transition:background .15s}
-.seamap-chips .chip:hover{background:rgba(255,255,255,.18)}
-.seamap-chips .chip.playing{background:#fff;color:var(--sea)}
+.pin .hit{fill:transparent}
+.pin .dot{fill:rgba(255,255,255,.95);transform-box:fill-box;transform-origin:center;transition:transform .18s;filter:drop-shadow(0 0 5px rgba(255,255,255,.55))}
+.pin:hover .dot,.pin:focus .dot{transform:scale(1.5)}
+.pin .lbl{fill:rgba(255,255,255,.52);font-size:13px;letter-spacing:.04em;transition:fill .18s;paint-order:stroke;stroke:rgba(6,7,8,.85);stroke-width:3px}
+.pin:hover .lbl,.pin:focus .lbl{fill:rgba(255,255,255,.9)}
+.pin .halo{fill:none;stroke:var(--accent,#e2725b);stroke-opacity:0;transform-box:fill-box;transform-origin:center}
+.pin.playing .dot{fill:var(--accent,#e2725b);transform:scale(1.5);filter:drop-shadow(0 0 8px rgba(226,114,91,.8))}
+.pin.playing .lbl{fill:#fff;font-weight:600}
+.pin.playing .halo{animation:mapPing 1.6s ease-out infinite}
+@keyframes mapPing{0%{transform:scale(.5);stroke-opacity:.9}100%{transform:scale(2.4);stroke-opacity:0}}
+.seamap-now{color:rgba(255,255,255,.82);font-size:14px;padding:14px 6px 6px;min-height:24px;border-top:1px solid rgba(255,255,255,.06);margin-top:10px}
+.seamap-chips{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:8px 4px 6px}
+.seamap-chips .chip{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05);color:rgba(255,255,255,.85);border-radius:999px;padding:7px 14px;font-size:13px;cursor:pointer;transition:all .15s}
+.seamap-chips .chip:hover{background:rgba(255,255,255,.12)}
+.seamap-chips .chip.playing{background:var(--accent,#e2725b);border-color:var(--accent,#e2725b);color:#fff}
+.seamap-chips .off-note{font-size:12px;color:rgba(255,255,255,.35)}
 
 /* --- 상품 카드 -----------------------------------------------------------*/
 .prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:22px}
