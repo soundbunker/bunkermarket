@@ -62,8 +62,9 @@ const Ocean = (() => {
   }
 
   /* 파일 재생 시도, 실패 시 합성으로 폴백.
-   * settled 가드: 타임아웃/교체 이후 늦게 로드된 파일이 몰래 재생을 시작해
-   * 합성음과 겹치던 버그를 막는다. */
+   * 실제 mp3 는 항상 존재하므로 합성음은 '진짜 오류'일 때만 쓴다.
+   * 'canplay'(시작 가능)에서 바로 재생하고, 버퍼가 덜 찼다는 이유로
+   * 합성음이 끼어들지 않게 한다. settled 가드로 늦은 로드의 중첩을 방지. */
   function playFile(sound){
     return new Promise((resolve)=>{
       const a = new Audio();
@@ -75,17 +76,20 @@ const Ocean = (() => {
         try{ a.pause(); a.removeAttribute('src'); a.load(); }catch(e){}
         resolve(null);
       };
-      a.addEventListener('canplaythrough', ()=>{
+      const start = ()=>{
         if(settled) return;
         a.play().then(()=>{
           if(settled){ try{a.pause();}catch(e){} return; }
           settled = true;
           resolve({ stop(){ try{ a.pause(); a.removeAttribute('src'); a.load(); }catch(e){} } });
         }).catch(fail);
-      }, {once:true});
+      };
+      // 시작 가능한 만큼만 받으면 바로 재생 (전체 버퍼링을 기다리지 않음)
+      a.addEventListener('canplay', start, {once:true});
+      a.addEventListener('loadeddata', start, {once:true});
       a.addEventListener('error', fail, {once:true});
-      // 파일이 없거나 너무 느리면 합성 파도로 폴백
-      setTimeout(()=>{ if(a.readyState < 3) fail(); }, 4000);
+      // 안전장치: 아주 오래 아무것도 못 받으면(파일 부재 등) 그때만 합성 폴백
+      setTimeout(()=>{ if(!settled && a.readyState === 0) fail(); }, 12000);
       a.src = sound.soundFile;
       a.load();
     });
