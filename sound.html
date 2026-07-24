@@ -40,6 +40,7 @@
 <script src="js/data.js"></script>
 <script src="js/ocean.js"></script>
 <script src="js/app.js"></script>
+<script src="js/seamap.js"></script>
 <script>
   const s = U.soundById(U.qs('s'));
   const app = document.getElementById('app');
@@ -77,7 +78,7 @@
         <div class="infoline">
           <div><span>분위기</span>${s.tags.join(' · ')}</div>
           ${s.coords ? `<div><span>좌표</span>${s.coords.lat.toFixed(3)}, ${s.coords.lng.toFixed(3)}</div>` : ''}
-          <div><span>이 바닷가의 것</span>${items.length}종</div>
+          <div><span>스친 마켓</span>${BUNKER.LISTINGS.length}곳</div>
         </div>
       </div>`;
     app.appendChild(hero);
@@ -95,31 +96,33 @@
       });
     };
 
-    // 소리가 흐르는 곳의 것
+    // 제주 소리 지도 — 핀을 눌러 다른 바다로 건너간다
+    const mapSec = document.createElement('section');
+    mapSec.className='block';
+    mapSec.innerHTML = `<div class="wrap">
+      <div class="sec-head"><div>
+        <h2>다른 바다로 건너가기</h2>
+        <p>핀을 누르면 그 바다의 소리가 바로 들려요. 듣던 소리는 자동으로 멈춥니다.</p>
+      </div></div>
+      <div id="seamap"></div>
+    </div>`;
+    app.appendChild(mapSec);
+    SeaMap.render(mapSec.querySelector('#seamap'), BUNKER.SOUNDS);
+
+    // 파도가 키운 것들 — 스친 전체 (태그한 바다의 것이 맨 앞에)
     const sec = document.createElement('section');
-    sec.className='block';
+    sec.className='block'; sec.style.background='#fff'; sec.style.borderTop='1px solid var(--line)';
     sec.innerHTML = `<div class="wrap">
       <div class="sec-head"><div>
-        <h2>이 소리가 흐르는 곳의 것</h2>
-        <p>${s.region.spot}의 파도가 흐르는 바닷가에서 자랐습니다. 상품을 누르면 판매처로 이동합니다.</p>
+        <h2>파도가 키운 것들</h2>
+        <p>스레드에서 만난 친구들의 것이에요. 누르면 수수료 없이 판매 페이지로 바로 이동합니다.</p>
       </div></div>
       <div class="prod-grid" id="items"></div>
     </div>`;
     app.appendChild(sec);
-
     const box = sec.querySelector('#items');
-    if(items.length){ items.forEach(l=>box.appendChild(UI.productCard(l))); }
-    else box.innerHTML = `<p class="muted">이 바닷가의 것을 준비 중입니다. 곧 만나요 🌊</p>`;
-
-    // 다른 소리
-    const more = document.createElement('section');
-    more.className='block'; more.style.background='#fff'; more.style.borderTop='1px solid var(--line)';
-    more.innerHTML = `<div class="wrap"><div class="sec-head"><div><h2>다른 소리</h2></div>
-      <a class="btn btn-line btn-sm" href="index.html#sounds">전체 →</a></div>
-      <div class="sound-grid" id="more"></div></div>`;
-    app.appendChild(more);
-    const mg = more.querySelector('#more');
-    BUNKER.SOUNDS.filter(x=>x.id!==s.id).slice(0,4).forEach(x=>mg.appendChild(UI.soundCard(x)));
+    [...items, ...BUNKER.LISTINGS.filter(l=>l.soundId!==s.id)]
+      .forEach(l=>box.appendChild(UI.productCard(l)));
 
     // NFC 로 들어온 경우: 소리 자동 재생 시도. 브라우저가 막으면(특히 iOS)
     // 재생버튼을 펄스시켜 '탭해서 듣기'를 유도한다.

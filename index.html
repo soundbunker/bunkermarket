@@ -67,6 +67,16 @@
   </div>
 </section>
 
+<!-- 소리 지도 -->
+<section class="block" id="soundmap">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><h2>제주 소리 지도</h2><p>핀을 누르면 그 바다의 소리가 바로 들려요. 한 번에 하나의 바다만 흐릅니다.</p></div>
+    </div>
+    <div id="seamap"></div>
+  </div>
+</section>
+
 <!-- 소리 그리드 -->
 <section class="block" id="sounds" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
   <div class="wrap">
@@ -120,7 +130,9 @@
 <script src="js/data.js"></script>
 <script src="js/ocean.js"></script>
 <script src="js/app.js"></script>
+<script src="js/seamap.js"></script>
 <script>
+  SeaMap.render(document.getElementById('seamap'), BUNKER.SOUNDS);
   const grid = document.getElementById('soundGrid');
   BUNKER.SOUNDS.forEach(s => grid.appendChild(UI.soundCard(s)));
   const pg = document.getElementById('prodGrid');
