@@ -76,7 +76,7 @@
         ${fromTag ? `<div style="margin-top:18px;display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:9px 16px;font-size:13.5px">🎴 <b>${s.code}</b> — 이 소리는 이제 회원님의 카드에 담겼어요. 언제든 다시 태그해 들으세요.</div>` : ''}
         <div class="infoline">
           <div><span>분위기</span>${s.tags.join(' · ')}</div>
-          <div><span>좌표</span>${s.coords.lat.toFixed(3)}, ${s.coords.lng.toFixed(3)}</div>
+          ${s.coords ? `<div><span>좌표</span>${s.coords.lat.toFixed(3)}, ${s.coords.lng.toFixed(3)}</div>` : ''}
           <div><span>이 바닷가의 것</span>${items.length}종</div>
         </div>
       </div>`;
