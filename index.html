@@ -82,8 +82,8 @@
 <section class="block">
   <div class="wrap">
     <div class="sec-head"><div>
-      <h2>이번 주 큐레이션</h2>
-      <p>소리로 산지를 고르고, 그 바닷가에서 자란 것 중 우리가 직접 고른 것만 소개합니다. 별점 대신, 고른 이유를 적었습니다.</p>
+      <h2>파도가 키운 것들</h2>
+      <p>소리가 흐르는 바닷가에서 온 스레드 친구들의 것. 별점 대신, 고른 이유를 적었습니다. 누르면 수수료 없이 판매처로 바로 이동해요.</p>
     </div><a class="btn btn-line btn-sm" href="catalog.html">전체 마켓 →</a></div>
     <div class="prod-grid" id="prodGrid"></div>
   </div>
@@ -124,7 +124,7 @@
 <script>
   SeaMap.render(document.getElementById('seamap'), BUNKER.SOUNDS);
   const pg = document.getElementById('prodGrid');
-  BUNKER.LISTINGS.slice(0,4).forEach(l => pg.appendChild(UI.productCard(l)));
+  BUNKER.LISTINGS.forEach(l => pg.appendChild(UI.productCard(l)));
 </script>
 <script data-goatcounter="https://bunkermarket.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </body>

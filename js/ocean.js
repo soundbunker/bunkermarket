@@ -69,27 +69,29 @@ const Ocean = (() => {
     return new Promise((resolve)=>{
       const a = new Audio();
       a.loop = true; a.preload = 'auto';
-      let settled = false;
-      const fail = ()=>{
-        if(settled) return;
-        settled = true;
-        try{ a.pause(); a.removeAttribute('src'); a.load(); }catch(e){}
-        resolve(null);
+      let done = false;        // resolve 는 딱 한 번
+      let triggered = false;   // play() 도 딱 한 번 (canplay/loadeddata 중복 방지)
+      const finish = (val)=>{
+        if(done) return;
+        done = true;
+        if(val === null){ try{ a.pause(); a.removeAttribute('src'); a.load(); }catch(e){} }
+        resolve(val);
       };
+      // 시작 가능한 만큼만 받으면 바로 재생 (전체 버퍼링을 기다리지 않음).
+      // 두 이벤트가 함께 발생해도 play() 는 한 번만 — 예전엔 두 번째 play() 가
+      // 재생 중인 오디오를 스스로 일시정지시켜 '소리가 안 나던' 버그가 있었다.
       const start = ()=>{
-        if(settled) return;
-        a.play().then(()=>{
-          if(settled){ try{a.pause();}catch(e){} return; }
-          settled = true;
-          resolve({ stop(){ try{ a.pause(); a.removeAttribute('src'); a.load(); }catch(e){} } });
-        }).catch(fail);
+        if(triggered || done) return;
+        triggered = true;
+        a.play()
+          .then(()=> finish({ stop(){ try{ a.pause(); a.removeAttribute('src'); a.load(); }catch(e){} } }))
+          .catch(()=> finish(null));
       };
-      // 시작 가능한 만큼만 받으면 바로 재생 (전체 버퍼링을 기다리지 않음)
       a.addEventListener('canplay', start, {once:true});
       a.addEventListener('loadeddata', start, {once:true});
-      a.addEventListener('error', fail, {once:true});
+      a.addEventListener('error', ()=> finish(null), {once:true});
       // 안전장치: 아주 오래 아무것도 못 받으면(파일 부재 등) 그때만 합성 폴백
-      setTimeout(()=>{ if(!settled && a.readyState === 0) fail(); }, 12000);
+      setTimeout(()=>{ if(!done && a.readyState === 0) finish(null); }, 12000);
       a.src = sound.soundFile;
       a.load();
     });

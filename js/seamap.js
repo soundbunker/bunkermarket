@@ -14,7 +14,7 @@ const SeaMap = (() => {
   /* 라벨 미세조정: a(anchor) dx dy — 겹침 방지 수작업 배치 */
   const LABEL = {
     yongduam:   { dy: -9 },
-    goneuldong: { a: 'end', dx: -12, dy: -6 },
+    goneuldong: { a: 'middle', dx: 0, dy: -15 },
     aljakji:    { dy: 15 },
     hado:       { a: 'end', dx: -12 },
     udo:        { a: 'end', dx: -12 },
