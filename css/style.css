@@ -52,7 +52,7 @@ img{max-width:100%;display:block}
 /* --- 히어로 --------------------------------------------------------------*/
 .hero{position:relative;overflow:hidden;background:linear-gradient(160deg,var(--sea),var(--sea-2) 60%,#0a2d3f);color:var(--foam)}
 .hero .wrap{position:relative;z-index:2;padding:86px 22px 96px}
-.hero h1{font-family:var(--serif);font-size:clamp(34px,6vw,60px);line-height:1.08;letter-spacing:-.02em;font-weight:600;max-width:16ch}
+.hero h1{font-family:var(--serif);font-size:clamp(34px,6vw,60px);line-height:1.14;letter-spacing:-.02em;font-weight:600;max-width:18ch;word-break:keep-all;text-wrap:balance}
 .hero p.lead{margin-top:22px;font-size:clamp(15px,2.2vw,19px);max-width:52ch;color:rgba(238,246,245,.82)}
 .hero .kicker{display:inline-flex;align-items:center;gap:8px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--tide-lite);margin-bottom:20px}
 .hero .cta-row{margin-top:34px;display:flex;gap:14px;flex-wrap:wrap}
@@ -192,7 +192,7 @@ section.block{padding:70px 0}
 .detail-hero{color:#fff;position:relative;overflow:hidden}
 .detail-hero .wrap{position:relative;z-index:2;padding:70px 22px 60px}
 .detail-hero .code{font-size:13px;letter-spacing:.16em;opacity:.85}
-.detail-hero h1{font-family:var(--serif);font-size:clamp(30px,5.5vw,52px);font-weight:600;margin:12px 0 8px;letter-spacing:-.02em}
+.detail-hero h1{font-family:var(--serif);font-size:clamp(30px,5.5vw,52px);font-weight:600;margin:12px 0 8px;letter-spacing:-.02em;word-break:keep-all;text-wrap:balance}
 .detail-hero .spot{font-size:15px;opacity:.9}
 .detail-hero .story{margin-top:20px;max-width:56ch;font-size:16px;opacity:.92}
 .player{margin-top:28px;display:flex;align-items:center;gap:16px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:10px 10px 10px 20px;max-width:440px;backdrop-filter:blur(6px)}
