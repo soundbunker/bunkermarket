@@ -50,13 +50,15 @@ const SeaMap = (() => {
       const dy = cfg.dy != null ? cfg.dy : 4;
       const name = s.title.split(' ')[0];
       return `<g class="pin" data-id="${s.id}" transform="translate(${p.x.toFixed(1)},${p.y.toFixed(1)})" tabindex="0" role="button" aria-label="${s.title} 재생">
-        <circle class="hit" r="16"></circle>
-        <circle class="halo" r="10"></circle>
-        <circle class="dot" r="4.5"></circle>
+        <circle class="hit" r="22"></circle>
+        <circle class="halo" r="11"></circle>
+        <circle class="dot" r="5.5"></circle>
         <text class="lbl" x="${dx}" y="${dy}" text-anchor="${anchor}">${name}</text>
         <title>${s.code} · ${s.title} — ${s.region.spot}</title>
       </g>`;
     }).join('');
+
+    const order = onMap.concat(offMap);   // 이전/다음 넘김 순서 (지도 표시 순)
 
     el.innerHTML = `
       <div class="seamap-panel">
@@ -74,42 +76,51 @@ const SeaMap = (() => {
           </g>
           ${pins}
         </svg>
+        <!-- 모바일: 이름 칩 스트립(핀이 작아 누르기 어려운 문제 보완) -->
+        <div class="seamap-list">
+          ${order.map(s=>`<button class="mchip" data-id="${s.id}">${s.title}</button>`).join('')}
+        </div>
         <div class="seamap-transport">
-          <div class="np" id="seamapNow">🌊 핀을 누르면 그 바다의 소리가 들려요</div>
+          <div class="np" id="seamapNow">🌊 핀이나 이름을 눌러보세요</div>
           <div class="tc">
             <button class="tb" data-act="prev" aria-label="이전 소리" title="이전 소리">⏮</button>
-            <button class="tb stop" data-act="stop" aria-label="정지" title="정지">⏹</button>
+            <button class="tb toggle" data-act="toggle" aria-label="재생" title="재생">▶</button>
             <button class="tb" data-act="next" aria-label="다음 소리" title="다음 소리">⏭</button>
           </div>
         </div>
-        ${offMap.length ? `<div class="seamap-chips">
-          ${offMap.map(s=>`<button class="chip" data-id="${s.id}">▶ ${s.title}</button>`).join('')}
-          <span class="off-note">— 지도 밖의 소리</span>
-        </div>` : ''}
       </div>`;
 
     const now = el.querySelector('#seamapNow');
     const transport = el.querySelector('.seamap-transport');
-    const order = onMap.concat(offMap);   // 이전/다음 넘김 순서 (지도 표시 순)
-    let cur = -1;                          // 현재 재생 인덱스 (없으면 -1)
+    const toggleBtn = el.querySelector('.tb.toggle');
+    let cur = -1;      // 현재 재생 인덱스 (없으면 -1)
+    let last = 0;      // 마지막으로 고른 인덱스 (▶ 재생 시 이어듣기)
+    let playingNow = false;
 
-    // 재생 상태를 지도·컨트롤 바에 반영 (Ocean.toggle 의 onState 콜백)
+    // 재생 상태를 지도·리스트·컨트롤 바에 반영 (Ocean.toggle 의 onState 콜백)
     function paint(on){
-      el.querySelectorAll('.pin,.chip').forEach(n=>n.classList.remove('playing'));
+      playingNow = on;
+      el.querySelectorAll('.pin,.mchip').forEach(n=>n.classList.remove('playing'));
       if(on && cur >= 0){
         const s = order[cur];
         transport.classList.add('active');
-        const node = el.querySelector(`[data-id="${s.id}"]`);
-        if(node) node.classList.add('playing');
+        // 같은 소리의 핀·칩 모두 하이라이트
+        el.querySelectorAll('[data-id="'+s.id+'"]').forEach(n=>n.classList.add('playing'));
         now.innerHTML = `<span class="eq"><i></i><i></i><i></i><i></i></span>&ensp;${s.code} · <b>${s.title}</b> — ${s.region.area} · ${s.region.spot}`;
+        toggleBtn.innerHTML = '❚❚'; toggleBtn.setAttribute('aria-label','정지'); toggleBtn.setAttribute('title','정지');
+        // 재생 중인 칩이 보이도록 스크롤
+        const chip = el.querySelector('.mchip[data-id="'+s.id+'"]');
+        if(chip && chip.scrollIntoView) chip.scrollIntoView({inline:'center', block:'nearest'});
       } else {
         transport.classList.remove('active');
-        now.innerHTML = '🌊 핀을 누르면 그 바다의 소리가 들려요';
+        now.innerHTML = '🌊 핀이나 이름을 눌러보세요';
+        toggleBtn.innerHTML = '▶'; toggleBtn.setAttribute('aria-label','재생'); toggleBtn.setAttribute('title','재생');
       }
     }
 
     function playIndex(i){
       cur = ((i % order.length) + order.length) % order.length;   // 순환
+      last = cur;
       const s = order[cur];
       if(!Ocean.isPlaying(s.id)) now.textContent = `… ${s.title} 여는 중`;
       Ocean.toggle(s, paint);
@@ -118,11 +129,11 @@ const SeaMap = (() => {
     }
 
     function togglePin(s){
-      if(Ocean.isPlaying(s.id)){ Ocean.stop(); cur = -1; }   // stop → paint(false)
+      if(Ocean.isPlaying(s.id)){ Ocean.stop(); cur = -1; }   // 재생 중인 그 소리 → 정지
       else playIndex(order.indexOf(s));
     }
 
-    el.querySelectorAll('.pin,.chip').forEach(node=>{
+    el.querySelectorAll('.pin,.mchip').forEach(node=>{
       const s = order.find(x=>x.id===node.dataset.id);
       const go = ()=>togglePin(s);
       node.addEventListener('click', go);
@@ -132,9 +143,13 @@ const SeaMap = (() => {
     transport.querySelectorAll('.tb').forEach(btn=>{
       btn.addEventListener('click', ()=>{
         const act = btn.dataset.act;
-        if(act === 'stop'){ Ocean.stop(); cur = -1; }
-        else if(act === 'next'){ playIndex(cur < 0 ? 0 : cur + 1); }
-        else if(act === 'prev'){ playIndex(cur < 0 ? 0 : cur - 1); }
+        const base = cur >= 0 ? cur : last;
+        if(act === 'toggle'){
+          if(playingNow){ Ocean.stop(); cur = -1; }   // 재생/정지 토글
+          else playIndex(base);
+        }
+        else if(act === 'next'){ playIndex(base + 1); }
+        else if(act === 'prev'){ playIndex(base - 1); }
       });
     });
   }
