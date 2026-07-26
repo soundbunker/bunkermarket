@@ -40,11 +40,11 @@ img{max-width:100%;display:block}
   background:rgba(238,246,245,.82);backdrop-filter:saturate(1.4) blur(12px);
   border-bottom:1px solid var(--line);
 }
-.nav .wrap{display:flex;align-items:center;gap:20px;height:64px}
-.brand{font-family:var(--serif);font-weight:600;font-size:20px;letter-spacing:-.02em;display:flex;align-items:center;gap:9px}
-.brand .dot{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(232,101,79,.18)}
-.nav nav{margin-left:auto;display:flex;gap:22px;align-items:center;font-size:14px}
-.nav nav a{color:var(--muted);transition:color .2s}
+.nav .wrap{display:flex;align-items:center;gap:20px;height:64px;flex-wrap:nowrap;min-width:0}
+.brand{font-family:var(--serif);font-weight:600;font-size:20px;letter-spacing:-.02em;display:flex;align-items:center;gap:9px;white-space:nowrap;flex:0 0 auto}
+.brand .dot{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(232,101,79,.18);flex:0 0 auto}
+.nav nav{margin-left:auto;display:flex;gap:22px;align-items:center;font-size:14px;flex-wrap:nowrap;white-space:nowrap}
+.nav nav a{color:var(--muted);transition:color .2s;white-space:nowrap}
 .nav nav a:hover{color:var(--ink)}
 .cart-btn{position:relative;display:inline-flex;align-items:center;gap:6px;background:var(--sea);color:var(--foam);padding:8px 14px;border-radius:999px;font-size:13px}
 .cart-btn .badge{background:var(--accent);color:#fff;border-radius:999px;min-width:18px;height:18px;font-size:11px;display:inline-flex;align-items:center;justify-content:center;padding:0 5px}
@@ -292,7 +292,8 @@ footer.site .col a{display:block;font-size:14px;margin-bottom:8px}
   main.wrap{padding-bottom:96px !important}
   .steps{grid-template-columns:1fr}
   /* 모바일에서도 내비 유지 (NFC 유입 = 모바일) — 크기만 축소 */
-  .nav nav{gap:13px;font-size:13px}
+  .nav nav{gap:14px;font-size:13px}
+  .nav .wrap{gap:14px}
   .hero .wrap{padding:60px 22px 70px}
   section.block{padding:50px 0}
   /* 상품 상세: 이미지 위 / 정보 아래 1단 스택 */
@@ -301,4 +302,12 @@ footer.site .col a{display:block;font-size:14px;margin-bottom:8px}
   .filters{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px}
   .filters::-webkit-scrollbar{display:none}
   .chip{flex:0 0 auto;white-space:nowrap}
+}
+
+/* 아주 좁은 화면(구형/소형 폰): 내비 더 축소 + 부차 링크 숨김 */
+@media(max-width:380px){
+  .nav .wrap{gap:10px}
+  .nav nav{gap:12px;font-size:12.5px}
+  .brand{font-size:18px}
+  .nav-hidexs{display:none}   /* '이야기'(같은 페이지 앵커) 숨겨 자리 확보 */
 }
