@@ -13,7 +13,7 @@
 <meta property="og:description" content="NFC 카드를 태그하면 바다의 소리가 흐르고, 그 소리가 흐르는 바닷가의 것들을 만납니다.">
 <meta property="og:image" content="https://market.soundb.kr/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="css/style.css?v=4">
+<link rel="stylesheet" href="css/style.css?v=5">
 </head>
 <body>
 
@@ -37,10 +37,10 @@
   <div class="col"><h4>문의</h4><a href="mailto:play@soundb.kr">play@soundb.kr</a></div>
 </div></footer>
 
-<script src="js/data.js?v=4"></script>
-<script src="js/ocean.js?v=4"></script>
-<script src="js/app.js?v=4"></script>
-<script src="js/seamap.js?v=4"></script>
+<script src="js/data.js?v=5"></script>
+<script src="js/ocean.js?v=5"></script>
+<script src="js/app.js?v=5"></script>
+<script src="js/seamap.js?v=5"></script>
 <script>
   const s = U.soundById(U.qs('s'));
   const app = document.getElementById('app');
@@ -83,16 +83,15 @@
       </div>`;
     app.appendChild(hero);
 
-    // 재생 버튼 (자동재생은 브라우저 정책상 탭 후 클릭 유도)
+    // 재생 버튼 — 손님이 직접 눌러야 소리가 난다
     const player = hero.querySelector('#player');
     const bp = hero.querySelector('#bigPlay');
-    let started = false;
     bp.onclick = ()=>{
       if(!Ocean.isPlaying(s.id)) bp.textContent = '…';   // 로딩 표시
       Ocean.toggle(s, on=>{
         bp.textContent = on ? '❚❚' : '▶';
         player.classList.toggle('playing', on);
-        if(on){ started = true; player.classList.remove('need-tap'); }
+        if(on) player.classList.remove('need-tap');
       });
     };
 
@@ -124,12 +123,9 @@
     [...items, ...BUNKER.LISTINGS.filter(l=>l.soundId!==s.id)]
       .forEach(l=>box.appendChild(UI.productCard(l)));
 
-    // NFC 로 들어온 경우: 소리 자동 재생 시도. 브라우저가 막으면(특히 iOS)
-    // 재생버튼을 펄스시켜 '탭해서 듣기'를 유도한다.
-    setTimeout(()=>{
-      if(U.qs('autoplay')==='1'){ bp.click(); }
-      setTimeout(()=>{ if(!started) player.classList.add('need-tap'); }, 500);
-    }, 300);
+    // 자동재생은 하지 않는다 — 브라우저가 막으면 '재생 중' 표시만 흐르고 소리는
+    // 안 나는 상태가 됐었다. 정지 상태로 두고 재생버튼을 펄스시켜 탭을 유도한다.
+    player.classList.add('need-tap');
   }
 </script>
 <script data-goatcounter="https://bunkermarket.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>

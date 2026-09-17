@@ -74,7 +74,7 @@ const Ocean = (() => {
       const finish = (val)=>{
         if(done) return;
         done = true;
-        if(val === null){ try{ a.pause(); a.removeAttribute('src'); a.load(); }catch(e){} }
+        if(val === null || val === 'blocked'){ try{ a.pause(); a.removeAttribute('src'); a.load(); }catch(e){} }
         resolve(val);
       };
       // 시작 가능한 만큼만 받으면 바로 재생 (전체 버퍼링을 기다리지 않음).
@@ -85,7 +85,9 @@ const Ocean = (() => {
         triggered = true;
         a.play()
           .then(()=> finish({ stop(){ try{ a.pause(); a.removeAttribute('src'); a.load(); }catch(e){} } }))
-          .catch(()=> finish(null));
+          // 브라우저가 재생을 막은 경우(NotAllowedError)는 합성음으로 넘어가지 않는다.
+          // 합성음도 똑같이 막혀 '재생 중' 표시만 흐르고 소리는 안 나기 때문.
+          .catch(e=> finish(e && e.name === 'NotAllowedError' ? 'blocked' : null));
       };
       a.addEventListener('canplay', start, {once:true});
       a.addEventListener('loadeddata', start, {once:true});
@@ -104,7 +106,8 @@ const Ocean = (() => {
     const my = ++seq;
     let ctrl = await playFile(sound);
     // 로딩 중에 다른 소리가 시작됐거나 정지됐다면, 이 결과는 폐기
-    if(my !== seq){ if(ctrl) ctrl.stop(); onState && onState(false); return false; }
+    if(my !== seq){ if(ctrl && ctrl.stop) ctrl.stop(); onState && onState(false); return false; }
+    if(ctrl === 'blocked'){ onState && onState(false); return false; }   // 정지 상태로 되돌림
     if(!ctrl) ctrl = synth(sound.tone ? sound.tone.hue : 200);   // 폴백
     current = { id: sound.id, ctrl, onState };
     onState && onState(true);
