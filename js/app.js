@@ -76,7 +76,7 @@ const UI = {
         <div class="price">${
           ((cat.mode==='inquiry' || U.hasLink(l)) && l.price != null)
             ? `${U.krw(l.price)}<small>/ ${E(l.unit)}</small>`
-            : `<small class="muted" style="font-weight:500">가격은 판매처에서 확인</small>`
+            : `<span class="price-note">가격은 판매처에서 확인</span>`
         }</div>
         <div class="prod-actions">
           <a class="${btnCls}" href="${E(href)}" ${attr} ${track}>${E(btnLabel)}</a>
