@@ -2,6 +2,8 @@
  * 벙커마켓 · 공용 UI / 렌더 헬퍼
  * ==========================================================================*/
 const U = {
+  // data.js 문자열을 HTML 에 끼울 때 — 제목에 " 하나만 있어도 속성이 깨지던 문제 방지
+  esc(v){ return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); },
   qs(name){ return new URLSearchParams(location.search).get(name); },
   krw(n){
     if(n >= 100000000) return (n/100000000).toLocaleString('ko-KR',{maximumFractionDigits:1})+'억';
@@ -84,28 +86,29 @@ const UI = {
     const attr = ext ? 'target="_blank" rel="noopener"' : '';
     const btnCls = cat.mode === 'inquiry' ? 'btn btn-line btn-sm' : 'btn btn-accent btn-sm';
     const btnLabel = U.buyLabel(l);
-    const track = `data-track="buy-${l.id}" data-track-title="${l.title}"`;
+    const E = U.esc;
+    const track = `data-track="buy-${E(l.id)}" data-track-title="${E(l.title)}"`;
     const el = document.createElement('div');
     el.className='prod-card';
     el.innerHTML = `
-      <a class="prod-thumb" href="${href}" ${attr} ${track} style="background:${U.grad(s.tone.hue)}">
+      <a class="prod-thumb" href="${E(href)}" ${attr} ${track} style="background:${U.grad(s.tone.hue)}">
         <span class="cat">${cat.icon} ${cat.label}</span>
         <span class="pick">🌊 산지 큐레이션</span>
         ${l.image
-          ? `<img class="photo" src="${l.image}" alt="${l.title}" loading="lazy">`
+          ? `<img class="photo" src="${E(l.image)}" alt="${E(l.title)}" loading="lazy">`
           : `<span class="emoji">${U.emoji(l)}</span>`}
       </a>
       <div class="prod-body">
-        ${s.id ? `<div class="from">🌊 <a href="sound.html?s=${s.id}">${s.title}</a> 소리가 흐르는 곳</div>` : ''}
-        <h3><a href="${href}" ${attr} ${track}>${l.title}</a></h3>
-        <div class="short">${l.short}</div>
+        ${s.id ? `<div class="from">🌊 <a href="sound.html?s=${E(s.id)}">${E(s.title)}</a> 소리가 흐르는 곳</div>` : ''}
+        <h3><a href="${E(href)}" ${attr} ${track}>${E(l.title)}</a></h3>
+        <div class="short">${E(l.short)}</div>
         <div class="price">${
           ((cat.mode==='inquiry' || U.hasLink(l)) && l.price != null)
-            ? `${U.krw(l.price)}<small>/ ${l.unit}</small>`
+            ? `${U.krw(l.price)}<small>/ ${E(l.unit)}</small>`
             : `<small class="muted" style="font-weight:500">가격은 판매처에서 확인</small>`
         }</div>
         <div class="prod-actions">
-          <a class="${btnCls}" href="${href}" ${attr} ${track}>${btnLabel}</a>
+          <a class="${btnCls}" href="${E(href)}" ${attr} ${track}>${E(btnLabel)}</a>
         </div>
       </div>`;
     return el;

@@ -48,13 +48,14 @@ const SeaMap = (() => {
       const anchor = cfg.a || 'start';
       const dx = cfg.dx != null ? cfg.dx : 12;
       const dy = cfg.dy != null ? cfg.dy : 4;
+      const E = U.esc;
       const name = s.title.split(' ')[0];
-      return `<g class="pin" data-id="${s.id}" transform="translate(${p.x.toFixed(1)},${p.y.toFixed(1)})" tabindex="0" role="button" aria-label="${s.title} 재생">
+      return `<g class="pin" data-id="${E(s.id)}" transform="translate(${p.x.toFixed(1)},${p.y.toFixed(1)})" tabindex="0" role="button" aria-label="${E(s.title)} 재생">
         <circle class="hit" r="22"></circle>
         <circle class="halo" r="11"></circle>
         <circle class="dot" r="5.5"></circle>
-        <text class="lbl" x="${dx}" y="${dy}" text-anchor="${anchor}">${name}</text>
-        <title>${s.code} · ${s.title} — ${s.region.spot}</title>
+        <text class="lbl" x="${dx}" y="${dy}" text-anchor="${anchor}">${E(name)}</text>
+        <title>${E(s.code)} · ${E(s.title)} — ${E(s.region.spot)}</title>
       </g>`;
     }).join('');
 
@@ -78,7 +79,7 @@ const SeaMap = (() => {
         </svg>
         <!-- 모바일: 이름 칩 스트립(핀이 작아 누르기 어려운 문제 보완) -->
         <div class="seamap-list">
-          ${order.map(s=>`<button class="mchip" data-id="${s.id}">${s.title}</button>`).join('')}
+          ${order.map(s=>`<button class="mchip" data-id="${U.esc(s.id)}">${U.esc(s.title)}</button>`).join('')}
         </div>
         <div class="seamap-transport">
           <div class="np" id="seamapNow">🌊 핀이나 이름을 눌러보세요</div>
@@ -106,7 +107,7 @@ const SeaMap = (() => {
         transport.classList.add('active');
         // 같은 소리의 핀·칩 모두 하이라이트
         el.querySelectorAll('[data-id="'+s.id+'"]').forEach(n=>n.classList.add('playing'));
-        now.innerHTML = `<span class="eq"><i></i><i></i><i></i><i></i></span>&ensp;${s.code} · <b>${s.title}</b> — ${s.region.area} · ${s.region.spot}`;
+        now.innerHTML = `<span class="eq"><i></i><i></i><i></i><i></i></span>&ensp;${U.esc(s.code)} · <b>${U.esc(s.title)}</b> — ${U.esc(s.region.area)} · ${U.esc(s.region.spot)}`;
         toggleBtn.innerHTML = '❚❚'; toggleBtn.setAttribute('aria-label','정지'); toggleBtn.setAttribute('title','정지');
         // 재생 중인 칩이 보이도록 스크롤
         const chip = el.querySelector('.mchip[data-id="'+s.id+'"]');

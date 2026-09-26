@@ -57,6 +57,7 @@
     const items = U.listingsForSound(s.id);
     const fromTag = U.qs('autoplay') === '1';   // NFC 카드로 들어온 손님
 
+    const E = U.esc;
     // 히어로
     const hero = document.createElement('section');
     hero.className='detail-hero';
@@ -66,19 +67,19 @@
         <path fill="#fff" opacity=".08" d="M0,240 C300,320 560,160 820,220 C1080,280 1240,200 1440,250 L1440,400 L0,400 Z"/>
       </svg>
       <div class="wrap">
-        <div class="code">${s.code}${fromTag ? ' · 📡 카드 태그 완료' : ''}</div>
-        ${fromTag ? `<p style="margin:10px 0 2px;font-size:16px;color:rgba(255,255,255,.9)">카드를 대셨네요 — 여기는 <b>${s.region.spot}</b>의 소리 페이지예요.</p>` : ''}
-        <h1>${s.title}</h1>
-        <div class="spot">${s.region.country} · ${s.region.area} · ${s.region.spot}</div>
+        <div class="code">${E(s.code)}${fromTag ? ' · 📡 카드 태그 완료' : ''}</div>
+        ${fromTag ? `<p style="margin:10px 0 2px;font-size:16px;color:rgba(255,255,255,.9)">카드를 대셨네요 — 여기는 <b>${E(s.region.spot)}</b>의 소리 페이지예요.</p>` : ''}
+        <h1>${E(s.title)}</h1>
+        <div class="spot">${E(s.region.country)} · ${E(s.region.area)} · ${E(s.region.spot)}</div>
         <div class="player" id="player">
           <button class="big-play" id="bigPlay" aria-label="재생">▶</button>
           <div class="wavebar">${'<i></i>'.repeat(28)}</div>
-          <div class="meta"><b>지금 듣기</b><br><span class="muted" style="color:rgba(255,255,255,.7)">${s.recordedAt} 녹음</span></div>
+          <div class="meta"><b>지금 듣기</b><br><span class="muted" style="color:rgba(255,255,255,.7)">${E(s.recordedAt)} 녹음</span></div>
         </div>
-        <p class="story">${s.story}</p>
-        ${fromTag ? `<div style="margin-top:18px;display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:9px 16px;font-size:13.5px">🎴 <b style="white-space:nowrap">${s.code}</b> — 이 소리는 이제 회원님의 카드에 담겼어요. 언제든 다시 태그해 들으세요.</div>` : ''}
+        <p class="story">${E(s.story)}</p>
+        ${fromTag ? `<div style="margin-top:18px;display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:9px 16px;font-size:13.5px">🎴 <b style="white-space:nowrap">${E(s.code)}</b> — 이 소리는 이제 회원님의 카드에 담겼어요. 언제든 다시 태그해 들으세요.</div>` : ''}
         <div class="infoline">
-          <div><span>분위기</span>${s.tags.join(' · ')}</div>
+          <div><span>분위기</span>${E(s.tags.join(' · '))}</div>
           ${s.coords ? `<div><span>좌표</span>${s.coords.lat.toFixed(3)}, ${s.coords.lng.toFixed(3)}</div>` : ''}
           <div><span>스친 마켓</span>${BUNKER.LISTINGS.length}곳</div>
         </div>
