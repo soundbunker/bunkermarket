@@ -33,9 +33,10 @@
       s = window.BUNKER.SOUNDS.find(function(x){ return x.code === code; });
     }
     if(!s) s = window.BUNKER.SOUNDS.find(function(x){ return x.id === q; });
+    // 못 찾으면 이유를 알려주는 착지 화면으로 (말없이 홈으로 보내면 손님은 카드가 고장난 줄 모른다)
     var target = s
       ? ('sound.html?s=' + encodeURIComponent(s.id) + '&autoplay=1')
-      : 'index.html#soundmap';                          // 못 찾으면 홈 지도로
+      : ('sound.html?missing=' + encodeURIComponent(q));
     location.replace(target);
   }
 </script>

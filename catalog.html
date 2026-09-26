@@ -57,7 +57,10 @@
 
   // 카테고리 칩
   const cf = document.getElementById('catFilters');
-  const cats = [['all','전체']].concat(Object.entries(BUNKER.CATEGORIES).map(([k,v])=>[k, v.icon+' '+v.label]));
+  const hasItems = k => BUNKER.LISTINGS.some(l=>l.category===k);
+  const cats = [['all','전체']].concat(Object.entries(BUNKER.CATEGORIES)
+    .filter(([k])=>hasItems(k) || k===state.cat)   // 빈 카테고리는 칩을 숨긴다 (직접 링크로 온 경우만 남김)
+    .map(([k,v])=>[k, v.icon+' '+v.label]));
   cats.forEach(([k,label])=>{
     const c=document.createElement('button'); c.className='chip'+(state.cat===k?' active':''); c.textContent=label;
     c.onclick=()=>{ state.cat=k; sync(); render(); }; cf.appendChild(c);
@@ -86,7 +89,11 @@
     const list = BUNKER.LISTINGS.filter(l=>
       (state.cat==='all'||l.category===state.cat) &&
       (state.sound==='all'||l.soundId===state.sound));
-    document.getElementById('empty').style.display = list.length?'none':'block';
+    const empty = document.getElementById('empty');
+    empty.style.display = list.length?'none':'block';
+    empty.textContent = (state.cat!=='all' && !hasItems(state.cat))
+      ? `${BUNKER.CATEGORIES[state.cat].label} 상품은 아직 준비 중이에요. 곧 소개할게요 🌊`
+      : '조건에 맞는 상품이 없어요.';
     list.forEach(l=>grid.appendChild(UI.productCard(l)));
   }
   render();
