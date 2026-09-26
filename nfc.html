@@ -5,17 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://bunkermarket.goatcounter.com; media-src 'self'; connect-src 'self' https://bunkermarket.goatcounter.com; object-src 'none'; base-uri 'self'">
 <title>NFC 카드 · 벙커마켓</title>
-<link rel="stylesheet" href="css/style.css?v=8">
+<link rel="stylesheet" href="css/style.css?v=9">
 <style>
   .nfc-list{display:grid;gap:12px}
-  .nfc-row{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-  .nfc-row .dotc{width:40px;height:40px;border-radius:10px;flex:0 0 auto}
+  .nfc-row{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:12px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .nfc-row .dotc{width:40px;height:40px;border-radius:8px;flex:0 0 auto}
   .nfc-row .g{flex:1;min-width:180px}
   .nfc-row .g b{font-size:16px}
   .nfc-row .url{font-size:12px;color:var(--muted);word-break:break-all;margin-top:0px}
   .nfc-row .acts{display:flex;gap:8px}
-  .cfg{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:24px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-  .cfg input{flex:1;min-width:220px;border:1.5px solid var(--line);border-radius:10px;padding:8px 12px;font-size:14px}
+  .cfg{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:24px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .cfg input{flex:1;min-width:220px;border:1.5px solid var(--line);border-radius:8px;padding:8px 12px;font-size:14px}
 </style>
 </head>
 <body>
@@ -63,9 +63,9 @@
   <div class="col"><h4>문의</h4><a href="mailto:play@soundb.kr">play@soundb.kr</a></div>
 </div></footer>
 
-<script src="js/data.js?v=8"></script>
-<script src="js/ocean.js?v=8"></script>
-<script src="js/app.js?v=8"></script>
+<script src="js/data.js?v=9"></script>
+<script src="js/ocean.js?v=9"></script>
+<script src="js/app.js?v=9"></script>
 <script>
   const baseInput = document.getElementById('base');
   const BASE_KEY='bunker.baseurl';

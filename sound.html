@@ -13,7 +13,7 @@
 <meta property="og:description" content="NFC 카드를 태그하면 바다의 소리가 흐르고, 그 소리가 흐르는 바닷가의 것들을 만납니다.">
 <meta property="og:image" content="https://market.soundb.kr/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="css/style.css?v=8">
+<link rel="stylesheet" href="css/style.css?v=9">
 </head>
 <body>
 
@@ -36,10 +36,10 @@
   <div class="col"><h4>문의</h4><a href="mailto:play@soundb.kr">play@soundb.kr</a></div>
 </div></footer>
 
-<script src="js/data.js?v=8"></script>
-<script src="js/ocean.js?v=8"></script>
-<script src="js/app.js?v=8"></script>
-<script src="js/seamap.js?v=8"></script>
+<script src="js/data.js?v=9"></script>
+<script src="js/ocean.js?v=9"></script>
+<script src="js/app.js?v=9"></script>
+<script src="js/seamap.js?v=9"></script>
 <script>
   const s = U.soundById(U.qs('s'));
   const app = document.getElementById('app');
@@ -75,7 +75,7 @@
           <div class="meta"><b>지금 듣기</b><br><span class="muted" style="color:rgba(255,255,255,.7)">${E(s.recordedAt)} 녹음</span></div>
         </div>
         <p class="story">${E(s.story)}</p>
-        ${fromTag ? `<div style="margin-top:16px;display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:8px 16px;font-size:14px">🎴 <b style="white-space:nowrap">${E(s.code)}</b> — 이 소리는 이제 회원님의 카드에 담겼어요. 언제든 다시 태그해 들으세요.</div>` : ''}
+        ${fromTag ? `<div style="margin-top:16px;display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:var(--radius);padding:12px 16px;font-size:14px">🎴 <b style="white-space:nowrap">${E(s.code)}</b> — 이 소리는 이제 회원님의 카드에 담겼어요. 언제든 다시 태그해 들으세요.</div>` : ''}
         <div class="infoline">
           <div><span>분위기</span>${E(s.tags.join(' · '))}</div>
           ${s.coords ? `<div><span>좌표</span>${s.coords.lat.toFixed(3)}, ${s.coords.lng.toFixed(3)}</div>` : ''}
