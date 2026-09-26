@@ -154,7 +154,6 @@ section.block{padding:64px 0}
 .prod-body h3{font-size:16px;font-weight:600}
 .prod-body .short{font-size:14px;color:var(--muted);margin-top:4px;flex:1}
 .prod-body .price{margin-top:12px;font-family:var(--serif);font-size:20px}
-.prod-body .price .price-note{font-size:14px;color:var(--muted)}
 .prod-body .price small{font-size:14px;color:var(--muted);font-family:var(--sans);margin-left:4px}
 .prod-actions{margin-top:12px;display:flex;gap:8px}
 .prod-actions .btn{flex:1;justify-content:center}

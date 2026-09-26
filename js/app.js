@@ -56,7 +56,8 @@ const UI = {
     const href = U.buyLink(l);
     const ext = cat.mode !== 'inquiry';        // 외부 사이트면 새 탭
     const attr = ext ? 'target="_blank" rel="noopener"' : '';
-    const btnCls = 'btn btn-line btn-sm';   // 산호 면은 화면의 주 행동 하나에만 쓴다
+    // 판매처 클릭이 이 카드의 목적 — 선 버튼보다 또렷한 바다색 면. 산호는 화면의 주 행동(재생) 몫으로 남긴다
+    const btnCls = 'btn btn-dark btn-sm';
     const btnLabel = U.buyLabel(l);
     const E = U.esc;
     const track = `data-track="buy-${E(l.id)}" data-track-title="${E(l.title)}"`;
@@ -73,11 +74,8 @@ const UI = {
         ${s.id ? `<div class="from">🌊 <a href="sound.html?s=${E(s.id)}">${E(s.title)}</a> 소리가 흐르는 곳</div>` : ''}
         <h3><a href="${E(href)}" ${attr} ${track}>${E(l.title)}</a></h3>
         <div class="short">${E(l.short)}</div>
-        <div class="price">${
-          ((cat.mode==='inquiry' || U.hasLink(l)) && l.price != null)
-            ? `${U.krw(l.price)}<small>/ ${E(l.unit)}</small>`
-            : `<span class="price-note">가격은 판매처에서 확인</span>`
-        }</div>
+        ${((cat.mode==='inquiry' || U.hasLink(l)) && l.price != null)
+          ? `<div class="price">${U.krw(l.price)}<small>/ ${E(l.unit)}</small></div>` : ''}
         <div class="prod-actions">
           <a class="${btnCls}" href="${E(href)}" ${attr} ${track}>${E(btnLabel)}</a>
         </div>
