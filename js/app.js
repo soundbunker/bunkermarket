@@ -48,34 +48,6 @@ const UI = {
     clearTimeout(t._h); t._h = setTimeout(()=>t.classList.remove('show'), 2200);
   },
 
-  /* --- 소리 카드 --------------------------------------------------------*/
-  soundCard(s){
-    const el = document.createElement('a');
-    el.className='sound-card'; el.href=`sound.html?s=${s.id}`;
-    el.style.background = U.grad(s.tone.hue);
-    el.innerHTML = `
-      <div class="sc-overlay"></div>
-      <span class="code">${s.code}</span>
-      <span class="live eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-      <button class="play" aria-label="소리 듣기">▶</button>
-      <div style="position:relative;z-index:2">
-        <h3>${s.title}</h3>
-        <div class="spot">${s.region.area} · ${s.region.spot}</div>
-        <div class="tags">${s.tags.map(t=>`<span>${t}</span>`).join('')}</div>
-      </div>`;
-    const btn = el.querySelector('.play');
-    btn.addEventListener('click', (e)=>{
-      e.preventDefault();
-      if(!Ocean.isPlaying(s.id)) btn.textContent = '…';   // 로딩 표시
-      Ocean.toggle(s, on=>{
-        btn.textContent = on ? '❚❚' : '▶';
-        btn.setAttribute('aria-label', on ? '일시정지' : '소리 듣기');
-        el.classList.toggle('playing', on);
-      });
-    });
-    return el;
-  },
-
   /* --- 상품 카드 --------------------------------------------------------*/
   productCard(l){
     // soundId 오타가 있어도 이 카드만 소리 연결 없이 그린다 (예전엔 예외로 목록 전체가 멈췄다)
