@@ -94,6 +94,16 @@
     ? '📡 이 기기는 <b>Web NFC 쓰기</b>를 지원합니다. “카드에 쓰기”를 누르고 빈 NFC 카드를 대세요. (안드로이드 Chrome)'
     : '💡 이 브라우저는 카드 직접 쓰기를 지원하지 않아요(대개 안드로이드 Chrome에서 가능). 아래 <b>주소</b>를 복사해 NFC 쓰기 앱으로 새기면 됩니다.';
 
+  // 클립보드 API 가 없거나 거부되면 옛 방식으로 한 번 더 시도하고, 그래도 안 되면 솔직히 알린다
+  async function copyText(t){
+    try{ await navigator.clipboard.writeText(t); UI.toast('주소를 복사했어요'); return; }catch(e){}
+    const ta=document.createElement('textarea'); ta.value=t; ta.setAttribute('readonly','');
+    ta.style.cssText='position:fixed;top:0;left:0;opacity:0'; document.body.appendChild(ta); ta.select();
+    let ok=false; try{ ok=document.execCommand('copy'); }catch(e){}
+    ta.remove();
+    UI.toast(ok ? '주소를 복사했어요' : '복사 실패 — 주소를 길게 눌러 직접 복사해주세요');
+  }
+
   async function writeCard(s){
     if(!hasNFC){ UI.toast('이 기기에서는 직접 쓰기가 안 돼요'); return; }
     try{
@@ -119,7 +129,7 @@
           <a class="btn btn-dark btn-sm" href="sound.html?s=${s.id}" target="_blank" rel="noopener">열기</a>
         </div>`;
       row.querySelector('.url').textContent = urlFor(s);   // 입력값은 텍스트로만 렌더
-      row.querySelector('.copy').onclick=()=>{ navigator.clipboard.writeText(urlFor(s)); UI.toast('주소를 복사했어요'); };
+      row.querySelector('.copy').onclick=()=>copyText(urlFor(s));
       const wr=row.querySelector('.wr'); if(wr) wr.onclick=()=>writeCard(s);
       list.appendChild(row);
     });

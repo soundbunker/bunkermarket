@@ -76,7 +76,8 @@ const UI = {
 
   /* --- 상품 카드 --------------------------------------------------------*/
   productCard(l){
-    const s = U.soundById(l.soundId);
+    // soundId 오타가 있어도 이 카드만 소리 연결 없이 그린다 (예전엔 예외로 목록 전체가 멈췄다)
+    const s = U.soundById(l.soundId) || { id:'', title:'', tone:{ hue:200 } };
     const cat = U.category(l.category);
     const href = U.buyLink(l);
     const ext = cat.mode !== 'inquiry';        // 외부 사이트면 새 탭
@@ -95,7 +96,7 @@ const UI = {
           : `<span class="emoji">${U.emoji(l)}</span>`}
       </a>
       <div class="prod-body">
-        <div class="from">🌊 <a href="sound.html?s=${s.id}">${s.title}</a> 소리가 흐르는 곳</div>
+        ${s.id ? `<div class="from">🌊 <a href="sound.html?s=${s.id}">${s.title}</a> 소리가 흐르는 곳</div>` : ''}
         <h3><a href="${href}" ${attr} ${track}>${l.title}</a></h3>
         <div class="short">${l.short}</div>
         <div class="price">${

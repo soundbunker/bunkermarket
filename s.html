@@ -17,7 +17,14 @@
 <script src="js/data.js?v=6"></script>
 <script>
   (function(){
-    var q = decodeURIComponent((location.search || '').slice(1)).trim();
+    // 어떤 이유로든(깨진 %인코딩, data.js 로드 실패) 여기서 멈추면 손님은
+    // '여는 중…' 화면에 갇힌다. 실패하면 무조건 홈 지도로 보낸다.
+    try { go(); } catch(e) { location.replace('index.html#soundmap'); }
+  })();
+  function go(){
+    var raw = (location.search || '').slice(1);
+    var q; try { q = decodeURIComponent(raw); } catch(e) { q = raw; }
+    q = q.trim();
     // 뒤에 =붙는 경우(빈 값 파라미터) 방어
     if(q.indexOf('=') > -1) q = q.split('=')[0];
     var s = null;
@@ -30,7 +37,7 @@
       ? ('sound.html?s=' + encodeURIComponent(s.id) + '&autoplay=1')
       : 'index.html#soundmap';                          // 못 찾으면 홈 지도로
     location.replace(target);
-  })();
+  }
 </script>
 </body>
 </html>
