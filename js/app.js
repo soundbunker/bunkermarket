@@ -29,8 +29,8 @@ const U = {
     if(cat.mode === 'inquiry') return cat.cta;
     return U.hasLink(l) ? (cat.cta + ' ↗') : '네이버쇼핑에서 찾기 ↗';
   },
-  // hue → 바다빛 그라디언트
-  grad(hue){ return `linear-gradient(155deg, hsl(${hue} 55% 26%), hsl(${(hue+22)%360} 60% 16%))`; },
+  // hue → 소리마다의 바다빛. 채도를 낮춘 한 색이 위에서 아래로 깊어질 뿐(두 색 그라데이션 금지)
+  grad(hue){ return `linear-gradient(180deg, hsl(${hue} 26% 22%), hsl(${hue} 30% 14%))`; },
   emoji(listing){
     const map={ '마늘':'🧄','당근':'🥕','브로콜리':'🥦','감자':'🥔','땅콩':'🥜',
       '양배추':'🥬','옥수수':'🌽','호박':'🎃','집':'🏡','주택':'🏡' };
@@ -56,7 +56,7 @@ const UI = {
     const href = U.buyLink(l);
     const ext = cat.mode !== 'inquiry';        // 외부 사이트면 새 탭
     const attr = ext ? 'target="_blank" rel="noopener"' : '';
-    const btnCls = cat.mode === 'inquiry' ? 'btn btn-line btn-sm' : 'btn btn-accent btn-sm';
+    const btnCls = 'btn btn-line btn-sm';   // 산호 면은 화면의 주 행동 하나에만 쓴다
     const btnLabel = U.buyLabel(l);
     const E = U.esc;
     const track = `data-track="buy-${E(l.id)}" data-track-title="${E(l.title)}"`;

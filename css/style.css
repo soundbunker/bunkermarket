@@ -11,10 +11,10 @@
   --sand:#e8d9bd;       /* 모래 */
   --sand-deep:#cbb488;
   --ink:#0c1a20;
-  --muted:#5f7480;
+  --muted:#586c78;      /* 포말 바탕 위 작은 글자도 대비 4.5 이상 */
   --line:rgba(12,26,32,.10);
-  --accent:#e8654f;     /* 산호 (CTA) */
-  --accent-deep:#cf4d38;
+  --accent:#e8654f;     /* 산호 — 로고 점·재생 중 표시 */
+  --accent-deep:#bf4b36;/* 글자를 얹는 산호 면(버튼). 흰 글자 대비 4.9 */
   --shadow:0 10px 30px -12px rgba(8,40,58,.35);
   --radius:18px;
   --maxw:1120px;
@@ -64,8 +64,8 @@ img{max-width:100%;display:block}
 /* --- 버튼 ----------------------------------------------------------------*/
 .btn{display:inline-flex;align-items:center;gap:9px;padding:13px 22px;border-radius:999px;font-size:16px;font-weight:600;border:0;cursor:pointer;transition:transform .15s,background .2s,box-shadow .2s;font-family:var(--sans)}
 .btn:active{transform:translateY(1px)}
-.btn-accent{background:var(--accent);color:#fff}
-.btn-accent:hover{background:var(--accent-deep);box-shadow:0 8px 20px -8px rgba(232,101,79,.6)}
+.btn-accent{background:var(--accent-deep);color:#fff}
+.btn-accent:hover{background:#a8412f}
 .btn-ghost{background:rgba(255,255,255,.10);color:var(--foam);border:1px solid rgba(255,255,255,.25)}
 .btn-ghost:hover{background:rgba(255,255,255,.18)}
 .btn-dark{background:var(--sea);color:var(--foam)}
@@ -117,7 +117,7 @@ section.block{padding:70px 0}
 /* 제주 소리 지도 — 전시관 에디션 (검은 바탕, 세선 에칭) */
 .seamap-panel{position:relative;background:radial-gradient(120% 140% at 50% 0%,#101216 0%,#0a0b0d 55%,#060708 100%);border:1px solid rgba(255,255,255,.07);border-radius:var(--radius);padding:22px 20px 14px;box-shadow:0 30px 60px -30px rgba(0,0,0,.55)}
 .seamap-cap{display:flex;align-items:baseline;gap:14px;padding:0 4px 14px;flex-wrap:wrap}
-.seamap-cap .en{font-size:12px;letter-spacing:.32em;color:rgba(255,255,255,.38)}
+.seamap-cap .en{font-size:12px;letter-spacing:.32em;color:rgba(255,255,255,.5)}
 .seamap-cap .ko{font-family:var(--serif);font-size:16px;color:rgba(255,255,255,.75)}
 .seamap-panel svg{width:100%;height:auto;display:block}
 .seamap-panel .isle{fill:#14171d;stroke:rgba(255,255,255,.5);stroke-width:1;stroke-linejoin:round;vector-effect:non-scaling-stroke}
