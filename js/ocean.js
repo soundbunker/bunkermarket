@@ -1,70 +1,14 @@
 /* ============================================================================
  * 벙커마켓 · 오디오 엔진
- * 실제 소리 파일(assets/sounds/*.mp3)이 있으면 그것을 재생하고,
- * 아직 없으면 Web Audio 로 파도 소리를 합성해 데모가 항상 동작하게 한다.
- * 소리마다 tone.hue 값으로 음색(필터/리듬)을 살짝 다르게 준다.
+ * 실제 녹음(assets/sounds/*.mp3)만 재생한다. 불러오지 못하면(약한 망·파일 오류)
+ * 합성음으로 대신하지 않고 정지 상태로 되돌린 뒤 '다시 눌러주세요'라고 알린다.
  * ==========================================================================*/
 const Ocean = (() => {
   let current = null;               // 현재 재생 중인 컨트롤러
   let seq = 0;                      // 재생 세대 토큰 — 늦게 로드된 오디오의 중첩 재생 방지
-  let ctx = null;
 
-  function getCtx(){
-    if(!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
-    if(ctx.state === 'suspended') ctx.resume();
-    return ctx;
-  }
-
-  /* 갈색 잡음(파도 저역) 버퍼 생성 */
-  function noiseBuffer(ac){
-    const len = ac.sampleRate * 3;
-    const buf = ac.createBuffer(1, len, ac.sampleRate);
-    const d = buf.getChannelData(0);
-    let last = 0;
-    for(let i=0;i<len;i++){
-      const white = Math.random()*2-1;
-      last = (last + 0.02*white)/1.02;
-      d[i] = last*3.2;
-    }
-    return buf;
-  }
-
-  /* 합성 파도: 잡음 → 로우패스 → 느린 진폭 LFO(밀려왔다 빠지는 리듬) */
-  function synth(hue){
-    const ac = getCtx();
-    const src = ac.createBufferSource();
-    src.buffer = noiseBuffer(ac); src.loop = true;
-
-    const lp = ac.createBiquadFilter();
-    lp.type='lowpass';
-    lp.frequency.value = 380 + (hue%60)*6;   // hue 로 음색 변화
-
-    const gain = ac.createGain(); gain.gain.value = 0.0001;
-    const lfo = ac.createOscillator();
-    lfo.frequency.value = 0.13 + (hue%40)/300; // 파도 주기
-    const lfoGain = ac.createGain(); lfoGain.gain.value = 0.16;
-    lfo.connect(lfoGain).connect(gain.gain);
-
-    const master = ac.createGain(); master.gain.value = 0;
-    src.connect(lp).connect(gain).connect(master).connect(ac.destination);
-
-    src.start(); lfo.start();
-    master.gain.linearRampToValueAtTime(0.9, ac.currentTime + 1.2);
-
-    return {
-      stop(){
-        try{
-          master.gain.linearRampToValueAtTime(0, ac.currentTime + 0.4);
-          setTimeout(()=>{ try{src.stop();lfo.stop();}catch(e){} }, 450);
-        }catch(e){}
-      }
-    };
-  }
-
-  /* 파일 재생 시도, 실패 시 합성으로 폴백.
-   * 실제 mp3 는 항상 존재하므로 합성음은 '진짜 오류'일 때만 쓴다.
-   * 'canplay'(시작 가능)에서 바로 재생하고, 버퍼가 덜 찼다는 이유로
-   * 합성음이 끼어들지 않게 한다. settled 가드로 늦은 로드의 중첩을 방지. */
+  /* 파일 재생 시도. 성공하면 컨트롤러, 불러오기 실패면 null, 브라우저 차단이면 'blocked'.
+   * 'canplay'(시작 가능)에서 바로 재생한다. done 가드로 늦은 로드의 중첩을 방지. */
   function playFile(sound){
     return new Promise((resolve)=>{
       const a = new Audio();
@@ -85,14 +29,12 @@ const Ocean = (() => {
         triggered = true;
         a.play()
           .then(()=> finish({ stop(){ try{ a.pause(); a.removeAttribute('src'); a.load(); }catch(e){} } }))
-          // 브라우저가 재생을 막은 경우(NotAllowedError)는 합성음으로 넘어가지 않는다.
-          // 합성음도 똑같이 막혀 '재생 중' 표시만 흐르고 소리는 안 나기 때문.
           .catch(e=> finish(e && e.name === 'NotAllowedError' ? 'blocked' : null));
       };
       a.addEventListener('canplay', start, {once:true});
       a.addEventListener('loadeddata', start, {once:true});
       a.addEventListener('error', ()=> finish(null), {once:true});
-      // 안전장치: 아주 오래 아무것도 못 받으면(파일 부재 등) 그때만 합성 폴백
+      // 안전장치: 아주 오래 아무것도 못 받으면(약한 망·파일 부재) 실패로 끝낸다
       setTimeout(()=>{ if(!done && a.readyState === 0) finish(null); }, 12000);
       a.src = sound.soundFile;
       a.load();
@@ -107,8 +49,12 @@ const Ocean = (() => {
     let ctrl = await playFile(sound);
     // 로딩 중에 다른 소리가 시작됐거나 정지됐다면, 이 결과는 폐기
     if(my !== seq){ if(ctrl && ctrl.stop) ctrl.stop(); onState && onState(false); return false; }
-    if(ctrl === 'blocked'){ onState && onState(false); return false; }   // 정지 상태로 되돌림
-    if(!ctrl) ctrl = synth(sound.tone ? sound.tone.hue : 200);   // 폴백
+    if(ctrl === 'blocked' || !ctrl){   // 정지 상태로 되돌리고 다시 누르도록 안내
+      onState && onState(false);
+      if(typeof UI !== 'undefined' && UI.toast)
+        UI.toast(ctrl === 'blocked' ? '재생 버튼을 다시 눌러주세요' : '소리를 불러오지 못했어요. 다시 눌러주세요');
+      return false;
+    }
     current = { id: sound.id, ctrl, onState };
     onState && onState(true);
     return true;

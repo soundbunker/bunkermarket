@@ -21,12 +21,11 @@ SOUND (소리)  ──1:N──▶  LISTING (그 바닷가의 것)
 | 파일 | 역할 |
 |---|---|
 | `js/data.js` | **데이터 전부.** SOUNDS · LISTINGS · CATEGORIES. 여기만 고치면 됨 |
-| `js/ocean.js` | 오디오 엔진. 실제 mp3 있으면 재생, 없으면 파도소리 합성(항상 동작) |
+| `js/ocean.js` | 오디오 엔진. 실제 mp3 만 재생 (못 불러오면 "다시 눌러주세요" 안내) |
 | `js/app.js` | 공용 렌더(소리카드·상품카드·토스트) + 판매처 링크 헬퍼(`buyLink`) |
 | `index.html` | 홈 — 컨셉 + 소리 아카이브 + 미리보기 |
 | `sound.html` | **NFC 착지 페이지.** 소리 재생 + 그 바닷가의 것 |
 | `catalog.html` | 마켓 — 카테고리/소리(산지) 필터, 카드 클릭 → 판매처 |
-| `product.html` | 상품 상세 (농산물=판매처 링크 / 집=이메일 문의) |
 | `nfc.html` | **운영용.** 카드별 주소 목록 · 복사 · Web NFC 직접 쓰기 |
 | `marketing/` | 카드뉴스(농민 설명용)·OG 이미지 생성 스크립트, 캔바 작업 킷 |
 
@@ -58,7 +57,7 @@ LISTINGS.push({ id:'p-...', soundId:'busan-gwangan', category:'produce',
 ## 실제 소리/사진 넣기
 
 - 소리: `assets/sounds/<id>.mp3` 로 저장 (data.js 의 `soundFile` 경로와 일치).
-  파일이 없으면 자동으로 파도소리를 합성해 재생하므로 데모는 항상 동작.
+  파일을 못 불러오면 합성음 없이 "다시 눌러주세요"라고 안내한다.
 - 상품 이미지는 이모지+소리색 그라디언트. 실사진 쓰려면 `app.js` 의 `productCard` 에 `<img>` 추가.
 
 ## NFC 카드 굽기 (마르셰 장터 준비)

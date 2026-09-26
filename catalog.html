@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://bunkermarket.goatcounter.com; media-src 'self'; connect-src 'self' https://bunkermarket.goatcounter.com; object-src 'none'; base-uri 'self'">
 <title>마켓 · 벙커마켓</title>
-<link rel="stylesheet" href="css/style.css?v=7">
+<link rel="stylesheet" href="css/style.css?v=8">
 </head>
 <body>
 
@@ -15,7 +15,6 @@
     <nav>
       <a href="index.html#soundmap">소리</a>
       <a href="catalog.html">마켓</a>
-      <a href="nfc.html">NFC 카드</a>
     </nav>
   </div>
 </header>
@@ -42,13 +41,13 @@
 <footer class="site"><div class="wrap">
   <div class="col"><div class="brand" style="font-size:20px"><span class="dot" style="background:var(--tide-lite);box-shadow:none"></span> 벙커마켓</div>
     <p style="font-size:14px">소리가 흐르는 곳.</p></div>
-  <div class="col"><h4>마켓</h4><a href="catalog.html">전체 상품</a><a href="nfc.html">NFC 카드</a></div>
+  <div class="col"><h4>마켓</h4><a href="catalog.html">전체 상품</a></div>
   <div class="col"><h4>문의</h4><a href="mailto:play@soundb.kr">play@soundb.kr</a></div>
 </div></footer>
 
-<script src="js/data.js?v=7"></script>
-<script src="js/ocean.js?v=7"></script>
-<script src="js/app.js?v=7"></script>
+<script src="js/data.js?v=8"></script>
+<script src="js/ocean.js?v=8"></script>
+<script src="js/app.js?v=8"></script>
 <script>
   let state = { cat: U.qs('cat') || 'all', sound: U.qs('s') || 'all' };
   // 존재하지 않는 카테고리/소리 파라미터는 무시 (조작된 URL로 렌더가 깨지지 않게)
