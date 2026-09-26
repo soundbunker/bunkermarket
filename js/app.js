@@ -65,7 +65,6 @@ const UI = {
     el.innerHTML = `
       <a class="prod-thumb" href="${E(href)}" ${attr} ${track} style="background:${U.grad(s.tone.hue)}">
         <span class="cat">${cat.icon} ${cat.label}</span>
-        <span class="pick">🌊 산지 큐레이션</span>
         ${l.image
           ? `<img class="photo" src="${E(l.image)}" alt="${E(l.title)}" loading="lazy">`
           : `<span class="emoji">${U.emoji(l)}</span>`}

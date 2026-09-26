@@ -250,11 +250,10 @@ footer.site .col a{display:block;font-size:14px;margin-bottom:8px}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 /* --- NFC 배너 ------------------------------------------------------------*/
-.nfc-banner{background:linear-gradient(120deg,var(--tide),#155f69);color:#fff;border-radius:var(--radius);padding:26px 28px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
-.nfc-banner .ico{font-size:38px}
-.nfc-banner .t{flex:1;min-width:220px}
-.nfc-banner h3{font-family:var(--serif);font-size:22px;margin-bottom:4px}
-.nfc-banner p{font-size:14px;opacity:.9}
+/* 색 덩어리 대신 가는 선 하나 — 도록의 맺음말처럼 */
+.nfc-banner{border-top:1px solid var(--line);padding:32px 0 0}
+.nfc-banner h3{font-family:var(--serif);font-size:20px;font-weight:600;margin-bottom:8px}
+.nfc-banner p{font-size:15px;color:var(--muted);max-width:52ch}
 
 /* --- 큐레이션(컬리 방법론 이식) ----------------------------------------- */
 /* 큐레이터 노트: '왜 이걸 골랐나'를 담는 에디토리얼 블록 */
